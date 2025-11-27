@@ -14,6 +14,7 @@ fi
 
 # Build the documentation
 cd docs
+make clean
 make html
 cd ..
 
