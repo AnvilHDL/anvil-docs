@@ -12,6 +12,7 @@ Welcome to AnvilHDL Documentation!
    :caption: Contents:
    
    background
+   helloWorld
 
 Quick Links
 -----------

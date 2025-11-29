@@ -14,6 +14,12 @@ release = '0.1.0'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+import sys
+import os
+
+# Add the _ext directory to the Python path for custom extensions
+sys.path.insert(0, os.path.abspath('ext'))
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
@@ -23,6 +29,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
     'myst_parser',
+    'anvil_playground',  # Custom extension for interactive playgrounds
 ]
 
 templates_path = ['_templates']
@@ -32,10 +39,20 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_static_path = ['static']
 # Add custom CSS file(s) to the HTML output. Files must be placed under _static.
 html_css_files = [
     'static.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css',
+]
+
+# Add custom JS files
+html_js_files = [
+    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js',
+    'playground-widget.js',
+    'navbar-toggle.js',
 ]
 
 # -- Extension configuration -------------------------------------------------
@@ -52,7 +69,6 @@ intersphinx_mapping = {
 
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.txt': 'markdown',
     '.md': 'markdown',
 }
 # Todo extension
