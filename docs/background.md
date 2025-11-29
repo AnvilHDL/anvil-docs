@@ -165,13 +165,11 @@ The `case` block inside the `always_comb` block (which defines combinational log
 
 Although understanding the implementation of this multiplier is already somewhat tricky, the lack of human descriptions, comments, or clear naming conventions creates additional challenges for any interfacing module. Several important questions arise for a module that wants to use this multiplier. For instance:
 
-* **How does the top module know when the product is ready?**
-* **How does the multiplier module know when to start computing? Does it expect new inputs every 8 cycles?**
-* **Without reading the implementation, can an interfacing module answer these questions by looking only at the interface definition?**
-* **Do compilers or synthesis tools help prevent incorrect usage of the module?**
+- **How does the top module know when the product is ready?**
+- **How does the multiplier module know when to start computing? Does it expect new inputs every 8 cycles?**
+- **Without reading the implementation, can an interfacing module answer these questions by looking only at the interface definition?**
+- **Do compilers or synthesis tools help prevent incorrect usage of the module?**
 
 These questions highlight the need for better abstractions in HDLs for describing hardware components. That is where *Anvil* comes in.
 
 > **Note** : The interfacing module is often called the *top* module and will be referred to as such in the rest of this documentation.
-
----
