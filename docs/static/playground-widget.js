@@ -240,15 +240,35 @@ class AnvilPlayground {
 }
 
 // Initialize all playground widgets on page load
-document.addEventListener('DOMContentLoaded', () => {
+function initPlaygrounds() {
     const playgroundElements = document.querySelectorAll('.anvil-playground-container');
+    
     playgroundElements.forEach((element) => {
         try {
-            const code = JSON.parse(element.dataset.code || '""');
-            const playgroundUrl = JSON.parse(element.dataset.playgroundUrl || '"https://anvil.capstone.kisp-lab.org"');
+            // Data attributes are automatically HTML-unescaped by the browser
+            const code = element.dataset.code || '';
+            const playgroundUrl = element.dataset.playgroundUrl || 'https://anvil.capstone.kisp-lab.org';
             new AnvilPlayground(element.id, code, playgroundUrl);
         } catch (e) {
             console.error('Failed to initialize playground:', e);
+            element.innerHTML = '<div style="color: red; padding: 20px;">Error loading playground: ' + e.message + '</div>';
+        }
+    });
+}
+
+// Try multiple initialization strategies
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPlaygrounds);
+} else {
+    initPlaygrounds();
+}
+
+// Also try on window load as backup
+window.addEventListener('load', () => {
+    const containers = document.querySelectorAll('.anvil-playground-container');
+    containers.forEach(c => {
+        if (!c.querySelector('.anvil-playground-widget')) {
+            initPlaygrounds();
         }
     });
 });

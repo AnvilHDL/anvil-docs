@@ -28,8 +28,15 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
+    'sphinx.ext.mathjax',  # LaTeX math support
     'myst_parser',
     'anvil_playground',  # Custom extension for interactive playgrounds
+]
+
+# MyST Parser configuration - enable math extensions
+myst_enable_extensions = [
+    "dollarmath",  # Enable $...$ and $$...$$ math
+    "amsmath",     # Enable LaTeX math environments
 ]
 
 templates_path = ['_templates']
@@ -47,12 +54,12 @@ html_css_files = [
     'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css',
 ]
 
-# Add custom JS files
+# Add custom JS files - CodeMirror must load before playground-widget.js
 html_js_files = [
-    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js',
-    'playground-widget.js',
-    'navbar-toggle.js',
+    ('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js', {'priority': 100}),
+    ('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js', {'priority': 101}),
+    ('playground-widget.js', {'priority': 500}),
+    ('navbar-toggle.js', {'priority': 501}),
 ]
 
 # -- Extension configuration -------------------------------------------------

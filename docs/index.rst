@@ -9,10 +9,19 @@ Welcome to AnvilHDL Documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-   
+   :caption: Language Reference
+
+   languageReference
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
    background
    helloWorld
+   
+
 
 Quick Links
 -----------

@@ -1,4 +1,4 @@
-# Background: The HDL Primer
+# 1. Background: The HDL Primer
 
 The hardware description workflow starts with writing the hardware description in an abstraction called RTL (Register Transfer Level). For example, if you want to describe a simple adder in the most widely used HDL, SystemVerilog, you would write:  
 

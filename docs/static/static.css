@@ -73,7 +73,7 @@ body, .wy-body-for-nav {
 
 .wy-nav-content {
     background-color: #ffffff !important;
-    max-width: 1000px !important;
+    max-width: 90% !important;
     transition: max-width 0.3s ease, padding 0.3s ease;
 }
 

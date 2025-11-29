@@ -60,21 +60,23 @@ class AnvilPlaygroundDirective(SphinxDirective):
 
 def visit_anvil_playground_html(self, node):
     """Generate HTML for the playground widget."""
+    import hashlib
+    import html
+    
     code = node['code']
     playground_url = node['playground_url']
     height = node['height']
     
     # Generate a unique ID for this widget
-    import hashlib
     widget_id = f"anvil-playground-{hashlib.md5(code.encode()).hexdigest()[:8]}"
     
-    # Properly escape attributes for HTML
-    import html
-    code_json = json.dumps(code)
-    playground_url_json = json.dumps(playground_url)
+    # Escape code for safe embedding in HTML data attribute
+    # Use html.escape to handle quotes and special characters
+    code_escaped = html.escape(code, quote=True)
+    playground_url_escaped = html.escape(playground_url, quote=True)
     
-    # Use raw HTML output
-    html_output = f'''<div class="anvil-playground-container" id="{widget_id}" data-code='{code_json}' data-playground-url='{playground_url_json}' style="min-height: {height};"></div>'''
+    # Use double quotes for HTML attributes, escape the content properly
+    html_output = f'''<div class="anvil-playground-container" id="{widget_id}" data-code="{code_escaped}" data-playground-url="{playground_url_escaped}" style="min-height: {height};"></div>'''
     
     self.body.append(html_output)
     raise nodes.SkipNode

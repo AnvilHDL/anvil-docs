@@ -1,4 +1,4 @@
-# Motivation
+# 2. Motivation
 
 In the previous section, we established the fundamental programming paradigm of HDLs, in which hardware components are modeled as state machines. We also saw that de-facto HDLs such as SystemVerilog provide the low-level constructs needed to describe these state machines, giving designers fine-grained control over hardware behavior. At the end of the section, we identified several questions that arise when interfacing with components written in these HDLs. These questions intuitively highlight the challenge of ensuring that modules exchange values with a shared understanding of timing and validity constraints.
 
