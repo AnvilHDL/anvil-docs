@@ -316,7 +316,7 @@ Here `@ sync-mode - @ sync-mode` specifies the synchronization modes for the lef
 For example, consider the following channel class definition for a simple request-response channel:
 
 ```rs
-chan simple_ch<T : data_type, W : int> {
+chan simple_ch<T : type, W : int> {
     left  req : (T@ req),
     right res : (logic[W]@#1) @dyn - @#1
 }
@@ -362,3 +362,547 @@ chan ep_le -- ep_ri : simple_ch<logic[8], 1>;
 
 This creates a channel of type `simple_ch<logic[8], 1>` and binds its endpoints to
 `ep_le` (left) and `ep_ri` (right).
+
+---
+
+## 6. Processes
+
+A process describes a module of the design. A complete design may consist of multiple processes that communicate with each other through channels.
+
+
+### Process Definition
+
+A process definition has the following syntax:
+
+
+```bnf
+proc-definition ::= "proc" identifier [ params | () ]
+                    "(" ( proc-endpoint-list | "()" ) ")"
+                    "{"
+                      process-item*
+                    "}"
+
+proc-endpoint-list ::= proc-endpoint
+                       ( "," proc-endpoint )*
+
+proc-endpoint ::= identifier ":" ( "left" | "right" )
+                  identifier [ param-vals ]
+
+process-item ::= channel-creation
+               | process-spawn
+               | reg-creation
+               | loop-thread
+               | recursive-thread
+```
+
+For example, consider the following process definition signature:
+
+```rs
+proc Foo<T : type, W : int>( ep : left simple_ch<T, W> ) {
+    // ... Process body ...
+}
+```
+
+This defines a process named `Foo` with:
+  - `T`, a data type parameter and `W`, an integer parameter;
+  - one endpoint argument `ep`, which is the left endpoint of the channel class `simple_ch<T, W>`.
+
+The process body contains:
+
+- channel creations,
+- process spawns,
+- register declarations, and
+- thread definitions
+  
+that together specify the behavior of the process.
+
+
+### Process Spawning
+
+Inside a process, a new instance of another process can be created using the `spawn` statement with the following syntax:
+
+```bnf
+process-spawn ::= "spawn" identifier [ param-vals ]
+                  "(" ( identifier ( "," identifier )* | "()" ) ")"
+                  ";"
+```
+
+For example:
+
+```rs
+proc Bar() {
+    chan ep_le -- ep_ri : simple_ch<logic[8], 4>;
+    spawn Foo<logic[8], 4>(ep_le);
+    // ... rest of process body ...
+}
+```
+
+This code:
+
+1. Defines a process named `Bar`.
+2. Creates a channel of type `simple_ch<logic[8], 4>`, binding its endpoints to `ep_le` and `ep_ri`.
+3. Spawns an instance of the process `Foo`, passing:
+   - the left endpoint `ep_le` as the argument, and
+   - the type parameters `logic[8]` and `4` to the spawned process.
+
+
+### Threads
+
+The body of a process is defined in terms of threads. Each process may contain multiple independent threads, which execute concurrently.
+
+Two kinds of threads are supported:
+
+#### Loop Threads
+
+Loop threads are used to defined infinite replicating behaviour of the components.
+
+```bnf
+loop-thread ::= "loop" "{" expression "}"
+```
+
+For example they can be used to define components with looping finite state machines, such as memory controllers (skeleton shown below):
+
+```rs
+proc memory_controller(ep : left memory_ch){
+    loop{
+        // Handle read requests
+    }
+    loop{
+        // Handle write requests
+    }
+}
+```
+
+#### Recursive Threads
+
+Recursive threads define general recursive behavior in a process. They generalize loop threads (`loop` can be thought of as tail recursive threads) and are particularly useful for describing pipelined behaviours.
+
+
+```bnf
+recursive-thread ::= "recursive" "{" expression "}"
+```
+
+Here is your section **lightly polished for clarity, flow, and coherence**, without changing the structure or adding new concepts. I kept your format and intent intact.
+
+---
+
+## 7. Registers
+
+A register provides the means to maintain **persistent state**.
+
+### Register Creation
+
+A register can be defined inside a process.
+
+```bnf
+reg-creation ::= reg $identifier : $data-type-expression [$param-vals] ;
+```
+
+The statement `reg r : dtype;` defines a new register with identifier `r` and data type `dtype`.
+
+
+### Register Read
+
+A register can be read using the `*` operator.
+
+```bnf
+reg-read-expression ::= *$identifier
+```
+
+The expression `*r` evaluates immediately to the current value of the register `r`.
+The value remains available until the next write to `r`.
+
+Upon reset, the initial value of a register is all zeros.
+
+
+
+### Register Write
+
+A register can be written using the `set` expression.
+
+```bnf
+set-expression ::= set $lval := $expression
+lval ::= $identifier | $lval.$identifier | $lval [ $expression ] | $lval [ $expression+:{$digit}+ ]
+```
+
+The `set` expression evaluates to `()` **delayed by one cycle**. All expressions involved
+must have been evaluated and must have valid results. The new value of the register becomes visible in the **next cycle**.
+
+For example, `set r := e` writes the evaluated result of `e` to the register `r` after one cycle.
+
+---
+
+
+
+## 8. Expressions
+
+Anvil provides a variety of expressions to describe hardware behaviour. Below is a comprehensive overview of the expression forms supported in Anvil.
+
+
+### Debug Statements
+
+For simulation only, Anvil provides a debug print (akin to `$display` in SystemVerilog) to print messages to the console, and `dfinish` to terminate the simulation.
+
+```bnf
+debug-print ::= "dprint" string-literal "(" expression ")" 
+debug-finish ::= "dfinish"
+```
+
+
+### Cycle
+
+The `cycle` expression introduces a delay in the evaluation of expressions.
+
+```
+cycle-expression ::= cycle { $digit }+
+```
+
+The `cycle` expression evaluates to the unit value `()` delayed by a specified number
+of cycles. Its sole purpose is to introduce this delay. For example, `cycle 3` evaluates to `()` after three cycles.
+
+
+### Wait
+
+The `wait` expression is the main means of controlling time. It is used to define sequencing between expressions.
+
+```
+wait-expression ::= $expression >> $expression
+```
+
+The expression `e1 >> e2` waits for the evaluation of `e1` to complete (if it has not already
+completed) before starting the evaluation of `e2`. The entire expression evaluates to the
+result of `e2` when both `e1` and `e2` have completed.
+
+For example, consider the following program:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+    
+    proc Top() {
+        reg counter : logic[8];
+        loop {
+            dprint"[Cycle %d] Starting computation..." (*counter) >>
+            cycle 2 >>
+            dprint"[Cycle %d] Computation done after 2 cycles." (*counter) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+For the above program, in each iteration of the first thread,
+the message `"[Cycle X] Starting computation..."` is printed, where `X` is the current value of the cycle counter stored in the register `counter`. The program then waits for 2 cycles, prints
+`"[Cycle X] Computation done after 2 cycles."`. After 1 cycle the program reaches the end of the loop iteration and starts the next iteration. The second thread increments the `counter` register every cycle. The third thread waits for 10 cycles and then terminates the simulation.
+
+
+### Join
+
+```
+join-expression ::= $expression ; $expression
+```
+
+The expression `e1; e2` starts the evaluations of `e1` and `e2` immediately and
+at the same time. It evaluates to the evaluation result of `e2` when both evaluations
+complete.
+
+For example, consider the modified version of the previous program:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+    
+    proc Top() {
+        reg counter : logic[8];
+        loop {
+            dprint"[Cycle %d] Starting computation..." (*counter) >>
+            (cycle 3; cycle 2) >>
+            dprint"[Cycle %d] Computation done after Later of (2,3) cycles." (*counter) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+In this program, in each iteration of the first thread,
+the message `"[Cycle X] Starting computation..."` is printed, where `X` is the current value of the cycle counter stored in the register `counter`. The program then starts the evaluations of `cycle 3` and `cycle 2` at the same time. The join expression completes when both cycles complete, which is after 3 cycles. Then the message `"[Cycle X] Computation done after Later of (2,3) cycles."` is printed. After 1 cycle the program reaches the end of the loop iteration and starts the next iteration.
+
+
+> *Note* The `>>` and `;` operators are right-associative and have the same precedence. For example, `e1; e2 >> e3; e4 >> e5` is equivalent to `(e1; (e2 >> (e3; (e4 >> e5))))`.
+
+### Let
+
+```
+let-expression ::= let $identifier = $expression ; $expression
+let-wait-expression ::= let $identifier = $expression >> $expression
+```
+
+The let expression `let x = e1; e2` binds `e1` to an identifier `x`, which can be
+referenced in `e2`. The entire expression evaluates to the evaluation result of `e2` when
+both `e1` and `e2` have completed.
+
+The difference between `let x = e1; e2` and `let x = e1 >> e2`
+is that the former starts evaluating `e1` and `e2` at the same time, whereas the latter
+waits for `e1` to complete before starting to evaluate `e2`, similar to the relationship
+between the join and wait expressions.
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    proc Top() {
+        reg counter : logic[8];
+        loop {
+            let cnt = *counter + 1 ;
+            dprint"[Cycle %d] Hello World in Anvil!" (cnt) >>
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+In this program, in each iteration of the loop, the expression `*counter + 1` is evaluated and bound to the identifier `cnt`. The debug print then prints the value of `cnt`.
+
+### If-else Expressions
+
+```
+if-else-expression ::= if $expression { $expression } [ else ( { $expression } | $if-else-expression ) ]
+```
+
+The expression `if e1 { e2 } else { e3 }` evaluates to the evaluation result of
+`e2` or `e3` depending on the evaluation result of `e1`. The evaluation of `e1` must already
+be complete and the result must still be valid.
+
+If `e1` evaluates to an all-zero value, the expression starts evaluating `e3`. Otherwise,
+it starts evaluating `e2`. The `else` clause is optional, with `if e1 { e2 }` being equivalent to
+`if e1 { e2 } else { () }`. Multiple conditionals can be chained, for example:
+`if e1 { e2 } else if e3 { e4 } else { ... }`.
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    proc Top() {
+        reg counter : logic[8];
+        loop {
+            if (*counter & 8'd1 == 0) {
+                dprint"[Cycle %d] Even cycle" (*counter) >>
+                cycle 3
+            } else {
+                dprint"[Cycle %d] Odd cycle" (*counter) >>
+                cycle 1
+            } >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+This program prints whether the current cycle (value of `counter`) is even or odd in each iteration of the loop. Note that the even cycles introduce a delay of 3 cycles, while the odd cycles introduce a delay of 1 cycle. Therefore in Anvil branches can take different times to complete and the language semantics and the type system are designed to handle this naturally.
+
+
+### Match Expressions
+
+Match expressions provide a pattern-matching primitive.
+
+```
+match-expression ::= match $expression { ($expression | _) => $expression {, ($expression | _) => $expression } }
+```
+
+The expression
+`match e { e1 => e1', e2 => e2', ..., en => en', _ => e' }`
+is syntax sugar for:
+
+```
+if e == e1 { e1' } else if e == e2 { e2' } else if ... else if e == en { en' } else { e' }
+```
+
+The `_ => e'` (default branch) must appear **exactly once** in the match expression.
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    proc Top() {
+        reg counter : logic[8];
+        loop{
+            match (*counter) {
+                8'd0 => dprint"[Cycle %d] Zero" (*counter),
+                8'd1 => dprint"[Cycle %d] One" (*counter),
+                8'd2 => dprint"[Cycle %d] Two" (*counter),
+                _     => dprint"[Cycle %d] Many" (*counter)
+            } >>
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+This program prints whether the current cycle (value of `counter`) is `0`, `1`, `2`, or `Many` in each iteration of the loop.
+
+### Arithmetic Expressions
+
+```
+binary-arith-expression ::= $expression $binary-arith-operator $expression
+unary-arith-expression ::= $unary-arith-operator $expression
+
+binary-arith-operator ::= + | - | & | | | ^ | < | > | <= | >= | == | != | in
+unary-arith-operator ::= - | ~ 
+```
+
+These expressions evaluate according to their operators. The evaluation completes
+when the one (unary) or both (binary) sub-expressions complete their evaluations.
+
+> **Note:** The `in` operator checks whether the value of the left expression is contained in the set specified by the right expression. The right-hand side must be a set of expressions enclosed in curly braces `{}`.
+> For example, `e1 in { e2, e3, e4 }` evaluates to true if the value of `e1` matches any of the values of `e2`, `e3`, or `e4`. This is syntax sugar for
+> `e1 == e2 || e1 == e3 || e1 == e4`.
+
+For example, consider the following program:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+    
+    enum state {
+        IDLE,
+        BUSY,
+        DONE
+    }
+    proc Top() {
+        reg counter : logic[8];
+        reg state : state;
+        loop{
+            if (*state in { state::IDLE, state::BUSY }){
+                dprint"[Cycle %d] Active State" (*counter)
+            } else if (*state == state::DONE){
+                dprint"[Cycle %d] Done State" (*counter)
+            } else {
+                dprint"[Cycle %d] Unknown State" (*counter)
+            } >>
+            set counter := *counter + 1;
+            set state := *state + 2'd1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+### Concatenation Expressions
+
+```
+concat-expression ::= #{ $expression {, $expression} }
+```
+
+The expression `#{e1, e2, ..., en}` concatenates the evaluation results of `e1`, `e2`, ...,
+`en` into an array where and completes evaluation when all evaluations of `e1`, `e2`, ..., `en` have completed.
+Note `en` will be placed at the low bits in the result while `e1` will be placed at the high bits.
+For example `#{2'b01, 5'b01101, 1'b1}` produces value `8'b01011011`.
+
+### Send Expressions
+
+```
+send-expression ::= send $identifier.$identifier ($expression)
+```
+
+When the evaluation of the expression `send ep.m (e)` starts, the process starts waiting
+to send the evaluated result of `e` with message `ep.m`, where `ep` is an endpoint identifier
+and `m` is a message identifier. The evaluation completes with result `()`
+once the send occurs.
+
+### Receive Expressions
+
+```
+recv-expression := recv $identifier.$identifier
+```
+
+When the evaluation of the expression `recv ep.m (e)` starts, the process starts waiting
+to receive the message `ep.m`, where `ep` is an endpoint identifier
+and `m` is a message identifier.
+Once the receive occurs,
+the evaluation completes with the received value as the result.
+
+
+For example, consider the following program:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    chan foobar_ch<T : type> {
+        left  req : (T@ req),
+        right res : (logic@#1)
+    }
+    proc Foo<T : type>( ep : right foobar_ch<T> ) {
+        reg counter : logic[8];
+        loop{
+            send ep.req ( 8'd42 ) >>
+            let res = recv ep.res >>
+            dprint"[Cycle %d][Foo] Received response: %d" (*counter,res) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+    }
+    proc Bar<T : type>(ep : left foobar_ch<T>){
+        reg counter : logic[8];
+        loop{
+            let req = recv ep.req >>
+            dprint"[Cycle %d][Bar] Received request: %d" (*counter,req) >>
+            cycle 3 >>
+            send ep.res (1'd1) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+    }
+    proc Top() {
+        chan ep_le -- ep_ri : foobar_ch<logic[8]>;
+        spawn Foo<logic[8]>(ep_ri);
+        spawn Bar<logic[8]>(ep_le);
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+
+
+
+
+
+
