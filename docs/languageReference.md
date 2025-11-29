@@ -266,15 +266,15 @@ enum state {
 
 ## 5. Channels
 
-A channel is the fundamental mechanism for communication and synchronization between a pair of processes.
+A channel is the fundamental abstraction for communication and synchronization between a pair of processes. Channels are abstractions of bundled interface wires in traditional HDLs. Some key abstractions related to channels are:
 
-**Endpoints:** Each channel has **two endpoints**, corresponding to the two ends of the communication. Conceptually, a channel resembles a pipe that transports values between its two endpoints.
+1. **Endpoints:** Each channel has **two endpoints**, corresponding to the two ends of the communication. Conceptually, a channel resembles a pipe that transports values between its two endpoints.
 
-**Messages** : A channel defines a set of **messages** that can be sent and received in specified directions. Each message carries a value of a given data type.
+2. **Messages** : A channel defines a set of messages that can be sent and received in specified directions. Each message carries a value of a given data type.
 
-**Timing Contract:** Each message is associated with a timing contract, which specifies how long the exchanged value remains valid after the communication completes. This duration is referred to as the message’s *lifetime*.
+3. **Timing Contract:** Each message is associated with a timing contract, which specifies how long the exchanged value remains valid after the communication completes. This duration is referred to as the message’s *lifetime*.
 
-**Synchronization:** All messages in Anvil are synchronous: a message transfer completes only when both endpoints are ready. Consequently, sending and receiving occur at the same logical time. The time of synchronization is defined as the time at which the send/receive operation completes.
+4. **Synchronization:** All messages in Anvil are synchronous: a message transfer completes only when both endpoints are ready. Consequently, sending and receiving occur at the same logical time. The time of synchronization is defined as the time at which the send/receive operation completes.
 
 By default, all messages use two-way handshake synchronization. However, Anvil allows users to specify different synchronization modes for each endpoint of a message. This enables the compiler to avoid generating unnecessary handshakes when synchronization is not required or can be determined statically.
 
