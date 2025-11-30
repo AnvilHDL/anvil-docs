@@ -680,7 +680,7 @@ For example:
 
 In this program, in each iteration of the loop, the expression `*counter + 1` is evaluated and bound to the identifier `cnt`. The debug print then prints the value of `cnt`.
 
-### If-else Expressions
+### If-Else
 
 ```
 if-else-expression ::= if $expression { $expression } [ else ( { $expression } | $if-else-expression ) ]
@@ -726,7 +726,7 @@ For example:
 This program prints whether the current cycle (value of `counter`) is even or odd in each iteration of the loop. Note that the even cycles introduce a delay of 3 cycles, while the odd cycles introduce a delay of 1 cycle. Therefore in Anvil branches can take different times to complete and the language semantics and the type system are designed to handle this naturally.
 
 
-### Match Expressions
+### Match
 
 Match expressions provide a pattern-matching primitive.
 
@@ -819,7 +819,7 @@ For example, consider the following program:
     }
 ```
 
-### Concatenation Expressions
+### Concatenation
 
 ```
 concat-expression ::= #{ $expression {, $expression} }
@@ -830,7 +830,7 @@ The expression `#{e1, e2, ..., en}` concatenates the evaluation results of `e1`,
 Note `en` will be placed at the low bits in the result while `e1` will be placed at the high bits.
 For example `#{2'b01, 5'b01101, 1'b1}` produces value `8'b01011011`.
 
-### Send Expressions
+### Send
 
 ```
 send-expression ::= send $identifier.$identifier ($expression)
@@ -841,10 +841,10 @@ to send the evaluated result of `e` with message `ep.m`, where `ep` is an endpoi
 and `m` is a message identifier. The evaluation completes with result `()`
 once the send occurs.
 
-### Receive Expressions
+### Receive 
 
 ```
-recv-expression := recv $identifier.$identifier
+recv-expression ::= recv $identifier.$identifier
 ```
 
 When the evaluation of the expression `recv ep.m (e)` starts, the process starts waiting
@@ -899,10 +899,179 @@ For example, consider the following program:
         }
     }
 ```
+### Try Send/Receive
+
+For the purpose of avoiding blocking on communication when synchronization is not guaranteed, Anvil provides convenience features such as `try send` and `try recv` expressions.
+
+```bnf
+try-send-expression ::= "try" "send" $identifier.$identifier($expression) { $expression } else $expression
+try-recv-expression ::= "try" $identifier = "recv" $identifier.$identifier { $expression } else $expression
+```
+
+For `try` expressions, if the communication can proceed immediately, then the continuation branch is executed with the result of the communication. Otherwise, the `else` branch is executed.
 
 
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    chan foobar_ch<T : type> {
+        left  req : (T@ req),
+        right res : (logic@#1)
+    }
+
+    proc Foo<T : type>( ep : right foobar_ch<T> ) {
+        reg counter : logic[8];
+        loop{
+            cycle 4 >>
+            send ep.req ( 8'd42 ) >>
+            let res = recv ep.res >>
+            dprint"[Cycle %d][Foo] Received response: %d" (*counter,res) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+    }
 
 
+    proc Bar<T : type>(ep : left foobar_ch<T>){
+        reg counter : logic[8];
+        loop{
+            try req = recv ep.req {
+                dprint"[Cycle %d][Bar] Received request: %d" (*counter,req) >>
+                cycle 3 >>
+                send ep.res (1'd1)
+            }else {
+                dprint"[Cycle %d][Bar] No request received, proceeding." (*counter)
+            } >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+    }
+
+    proc Top() {
+        chan ep_le -- ep_ri : foobar_ch<logic[8]>;
+        spawn Foo<logic[8]>(ep_ri);
+        spawn Bar<logic[8]>(ep_le);
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+
+```
+
+In the above program, the `Bar` process uses a `try recv` expression to attempt to receive a request from the `Foo` process. If a request is available, it processes the request and sends a response. If no request is available, it prints a message indicating that no request was received and proceeds without blocking.
 
 
+### Functions
 
+Functions provide a means of code reuse. Although we call them functions, in the current version, they are more akin to macros at the expression AST level.
+
+```
+function-definition ::= func $identifier ( [$identifier {, $identifier}] ) { $expression }
+```
+
+Calling a function simply substitutes the call in place with the function body,
+with the extra bindings specified in the parameters:
+
+```
+call-expression ::= call $identifier ( [$expression {, $expression}] )
+```
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    func max(a, b) {
+        if a > b {
+            a
+        } else {
+            b
+        }
+    }
+    proc Top() {
+        reg counter : logic[8];
+        loop{
+            let sum = call max( *counter, 8'd5 ) >>
+            dprint"[Cycle %d] Max : %d" (*counter, sum) >>
+            cycle 1
+        }
+        loop{
+            set counter := *counter + 1
+        }
+        loop{
+            cycle 10 >>
+            dfinish
+        }
+    }
+```
+
+In this program, we define a function named `max` that takes two parameters, `a` and `b`, and returns the maximum of the two. Inside the `Top` process, we call this function with the current value of the `counter` register and the constant `8'd5`. The result is bound to the identifier `sum`, which is then printed in the debug statement.  
+
+> **Note:** In current version, functions have all the bindings in the context of the call site in scope, including registers inside processes.
+ 
+
+### Generate 
+
+
+Sometimes for repetitive code patterns, it is useful to generate code programmatically. Anvil provides two generate constructs: `generate` and `generate_seq`.
+
+```
+generate-expression ::= "generate" ( $identifier : $start, $end, $step ) { $expression }
+generate-seq-expression ::= "generate_seq" ( $identifier : $start, $end, $step ) { $expression }
+```
+
+The `generate` expression unrolls the body expression for each value of the loop variable from `start` to `end` (inclusive) with the specified `step` in parallel i.e akin to generating a join expression of all the unrolled bodies. On the other hand, the `generate_seq` expression unrolls the body expression for each value of the loop variable from `start` to `end` (inclusive) with the specified `step` in sequence i.e akin to generating a wait expression of all the unrolled bodies.
+
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    type byte = (logic[8]);
+    proc Bar(){
+      reg mem : byte[4];
+      reg counter : logic[8];
+      loop{
+            generate_seq (i : 0, 3, 1) {
+                set mem[i] := i >>
+                dprint"[Cycle %d][Bar] mem[%d] = %d" (*counter, i, *mem[i])
+
+            } >>
+            dprint"[Cycle %d][Bar] Memory initialized." (*counter) >>
+            dfinish >>
+            cycle 1
+        }
+        loop{
+          set counter := *counter + 1
+        }
+
+    }
+    proc Top() {
+        reg mem : byte[4];
+        reg counter : logic[8];
+        spawn Bar();
+        loop{
+            generate (i : 0, 3, 1) {
+                set mem[i] := i
+            } >>
+            dprint"[Cycle %d][Top] Memory initialized. (%d , %d, %d, %d)" (*counter, *mem[0], *mem[1], *mem[2], *mem[3]) >>
+            cycle 1
+        }
+        loop{
+          set counter := *counter + 1
+        }
+        
+    }
+
+```
+
+In this program, the `Top` process uses the `generate` construct to initialize an array `mem` in parallel, while the `Bar` process uses the `generate_seq` construct to initialize its own array `mem` in sequence. Each iteration of the loop variable `i` sets the corresponding element of the array and prints its value. The `Top` process completes the initialization in one cycle, while the `Bar` process takes multiple cycles to complete its sequential initialization.
