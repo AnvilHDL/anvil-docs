@@ -20,6 +20,7 @@ Welcome to AnvilHDL Documentation!
 
    background
    helloWorld
+   communication
    
 
 
