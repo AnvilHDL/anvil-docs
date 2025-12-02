@@ -1,6 +1,6 @@
 # 3. Communication is the key
 
-The key functionality of hardware components is to communicate with each other. As discussed in the [background](./background.md), such communication is often subject to **timing violations** due to the lack of precise and explicit **timing contracts** between components.
+The key functionality of hardware components is to communicate with each other. As discussed in the [background](./background.md), such communication is often prone to **timing hazards** due to the lack of precise and explicit **timing contracts** between components.
 
 However the cause can be attributed to the interface definition for defacto-HDLs. For example, consider the following SystemVerilog interface for a module `Foo`:
 
@@ -26,20 +26,20 @@ Concretely, questions such as: *How long is `input_i` expected to remain stable 
 
 ## Channels in Anvil
 
-Anvil addresses this problem of timing hazards through an abstraction of communication called **channels**. Unlike traditional interfaces in HDLs, channels encode timing constraints directly into the interface itself.
+Anvil addresses this lack of timing contracts through an abstraction of communication via channels. Unlike traditional interfaces in HDLs, channels encode timing contracts as first-class citizens of the interface.
 
-At the hardware level, a channel is still just a bundle of wires that provides a message-like transmit and receive abstraction. However, its interface explicitly includes the timing behavior of those messages. For the same interface as above, the communication can be expressed in Anvil using the following channel definition:
+At the hardware level, a channel is still just a bundle of wires that two components use to exchange values. However, the definition explicitly labels the guarantees and assumptions regarding the *lifetime* of those messages. For the same interface as above, the communication can be expressed in Anvil using the following channel definition:
 
 ```rs
 chan foobar_ch {
-    left req : (logic[8]@res),
+    left  req : (logic[8]@res),
     right res : (logic[8]@#1)
 }
 ```
 
 The channel definition begins with the keyword `chan`, followed by the channel name (`foobar_ch`). It then specifies the **message identifiers**, their **data types**, and the associated **timing contracts** for each communicating endpoint (`left` and `right`).
 
-Here, the `left` endpoint receives a message labeled `req` of type `logic[8]` with lifetime `@res`. This lifetime represents a **guarantee from the `right` endpoint** that the value can be safely used by the `left` side without changing until the abstract time when the `res` message is acknowledged. Since this acknowledgement may occur at different times at run time, the lifetime is **dynamic**.
+Here, the `left` endpoint receives a message labeled `req` of type `logic[8]` with lifetime `@res`. This lifetime represents a guarantee from the `right` endpoint that the value can be safely used by the `left` side without changing until the abstract time when the `res` message is acknowledged. Since this acknowledgement may occur at different times at run time, the lifetime is dynamic.
 
 In contrast, the `right` endpoint receives a message labeled `res` of type `logic[8]` with lifetime `@#1`, which specifies a static lifetime: the value is guaranteed to remain stable for exactly one cycle after it is acknowledged.
 
@@ -51,7 +51,7 @@ This explicit encoding of timing contracts provides two key benefits:
 
 2. **For the type system**, timing safety can be enforced modularly. Specifically:
 
-   - For all values created inside a process, the type system ensures that they are used only within their specified lifetimes.
+   - For all values created inside a process, the type system ensures that they are used only within their valid scopes or lifetimes, where values derived from channel messages assume the lifetimes specified in the channel definition.
    - For all values communicated over channels, the type system guarantees that the underlying registers respect the promised lifetimes, thereby preventing timing hazards by construction.
 
 
