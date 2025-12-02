@@ -78,7 +78,7 @@ hexadecimal-literal    ::= { $digit }+ 'h { $digit | a...f | A...F }+
 
 Examples:
 
-```rs
+```anvil
 8'b10101010
 16'hFFEE
 8'd170
@@ -94,7 +94,7 @@ string-literal ::= " { $string-char } "
 
 Example:
 
-```rs
+```anvil
 "Hello, Anvil!"
 ```
 
@@ -109,7 +109,7 @@ Anvil supports several kinds of values, including:
 
 `logic` is the most atomic value type in Anvil. It represents a single bit and can take the values:
 
-```rs
+```anvil
 1'b0
 1'b1
 ```
@@ -128,7 +128,7 @@ where `n` is the number of bits.
 
 Example:
 
-```rs
+```anvil
 8'b10101010        // binary
 8'hAA              // hexadecimal
 8'd170             // decimal
@@ -139,13 +139,13 @@ All three examples represent the same 8-bit value.
 
 Arrays of arbitrary data types are written as:
 
-```rs
+```anvil
 [ v0, v1, ..., v(n-1) ]
 ```
 
 Example:
 
-```rs
+```anvil
 [ 8'd1, 8'd2, 8'd3 ]
 ```
 
@@ -161,7 +161,7 @@ struct_type_ident::{ field1 = value1; field2 = value2; ... }
 
 Example:
 
-```rs
+```anvil
 address_data_pair::{ data = 8'b10101010; addr = 16'hFFEE }
 ```
 
@@ -169,13 +169,13 @@ address_data_pair::{ data = 8'b10101010; addr = 16'hFFEE }
 
 An `enum` represents a named constant chosen from a finite set. The syntax to refer to an enum constant is:
 
-```rs
+```anvil
 enum_type_ident::const_ident
 ```
 
 Example:
 
-```rs
+```anvil
 state::IDLE
 state::BUSY
 ```
@@ -202,7 +202,7 @@ Meaning:
 - `(T[n])` is an array of `n` elements of type `T`.
 Examples:
 
-```rs
+```anvil
 logic
 address_data_pair
 logic[8]
@@ -218,7 +218,7 @@ data-type-definition ::= type $identifier [ $params ] = $data-type-expression ;
 
 Example:
 
-```rs
+```anvil
 type byte = (logic[8]);
 type word = (logic[32]);
 ```
@@ -236,7 +236,7 @@ struct $identifier [ $params ] {
 
 Example:
 
-```rs
+```anvil
 struct address_data_pair {
   data : (logic[8]),
   addr : (logic[16])
@@ -255,7 +255,7 @@ enum $identifier {
 
 Example:
 
-```rs
+```anvil
 enum state {
   IDLE,
   BUSY,
@@ -315,7 +315,7 @@ Here `@ sync-mode - @ sync-mode` specifies the synchronization modes for the lef
 
 For example, consider the following channel class definition for a simple request-response channel:
 
-```rs
+```anvil
 chan simple_ch<T : type, W : int> {
     left  req : (T@ req),
     right res : (logic[W]@#1) @dyn - @#1
@@ -356,7 +356,7 @@ channel-creation ::= "chan" identifier "--" identifier ":"
 
 For example:
 
-```rs
+```anvil
 chan ep_le -- ep_ri : simple_ch<logic[8], 1>;
 ```
 
@@ -397,7 +397,7 @@ process-item ::= channel-creation
 
 For example, consider the following process definition signature:
 
-```rs
+```anvil
 proc Foo<T : type, W : int>( ep : left simple_ch<T, W> ) {
     // ... Process body ...
 }
@@ -429,7 +429,7 @@ process-spawn ::= "spawn" identifier [ param-vals ]
 
 For example:
 
-```rs
+```anvil
 proc Bar() {
     chan ep_le -- ep_ri : simple_ch<logic[8], 4>;
     spawn Foo<logic[8], 4>(ep_le);
@@ -462,7 +462,7 @@ loop-thread ::= "loop" "{" expression "}"
 
 For example they can be used to define components with looping finite state machines, such as memory controllers (skeleton shown below):
 
-```rs
+```anvil
 proc memory_controller(ep : left memory_ch){
     loop{
         // Handle read requests

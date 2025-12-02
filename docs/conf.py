@@ -31,6 +31,7 @@ extensions = [
     'sphinx.ext.mathjax',  # LaTeX math support
     'myst_parser',
     'anvil_playground',  # Custom extension for interactive playgrounds
+    'anvil_lexer',
 ]
 
 # MyST Parser configuration - enable math extensions

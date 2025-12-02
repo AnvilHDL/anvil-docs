@@ -176,6 +176,7 @@ pre, code, .rst-content code, .rst-content pre {
     color: #333333 !important;
     border: 1px solid #e0e0e0 !important;
     font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace !important;
+    font-size: 15px !important;
 }
 
 .highlight {
@@ -713,12 +714,10 @@ footer, .rst-footer-buttons {
     }
 }
 
-/* ========================================
-   Mobile / iOS Safari Fixes
-   ======================================== */
+
 
 @media (max-width: 768px) {
-    /* Fix mobile header bar */
+
     .wy-nav-top {
         background-color: #c0504d !important;
         color: white !important;
@@ -729,7 +728,7 @@ footer, .rst-footer-buttons {
         line-height: 50px !important;
     }
     
-    /* Fix hamburger menu alignment */
+
     .wy-nav-top i {
         color: white !important;
         font-size: 24px !important;
@@ -743,7 +742,7 @@ footer, .rst-footer-buttons {
         padding: 0 !important;
     }
     
-    /* Fix title alignment */
+
     .wy-nav-top a {
         color: white !important;
         display: inline-flex !important;
@@ -754,24 +753,24 @@ footer, .rst-footer-buttons {
         font-size: 16px !important;
     }
     
-    /* Hide our custom toggle on mobile - use default */
+
     .navbar-toggle-btn {
         display: none !important;
     }
     
-    /* Fix sidebar on mobile - IMPORTANT: Don't override left positioning */
+
     .wy-nav-side {
         background-color: #fffef0 !important;
-        /* RTD uses left: -300px by default, left: 0 when open */
+
     }
     
-    /* Remove any conflicting transforms that might break mobile nav */
+
     body.nav-hidden .wy-nav-side {
         transform: none !important;
         -webkit-transform: none !important;
     }
     
-    /* Let RTD handle mobile nav positioning */
+
     .wy-nav-side {
         background-color: #fffef0 !important;
         transition: left 0.3s ease !important;
@@ -782,20 +781,20 @@ footer, .rst-footer-buttons {
         transition: left 0.3s ease !important;
     }
     
-    /* Content area adjustments */
+
     .wy-nav-content {
         padding: 1rem !important;
         max-width: 100% !important;
     }
     
-    /* Fix headings on mobile */
+
     h1, h2, h3, h4, h5, h6,
     .rst-content h1, .rst-content h2, .rst-content h3 {
         padding: 6px 10px !important;
         font-size: 1.2em !important;
     }
     
-    /* Fix code blocks on mobile */
+
     pre, code {
         font-size: 12px !important;
         word-break: break-word !important;
@@ -806,7 +805,7 @@ footer, .rst-footer-buttons {
         -webkit-overflow-scrolling: touch;
     }
     
-    /* Fix playground widget on mobile */
+
     .anvil-playground-widget {
         margin: 10px 0;
     }
@@ -816,19 +815,19 @@ footer, .rst-footer-buttons {
         font-size: 12px !important;
     }
     
-    /* Better touch targets */
+
     .anvil-tab {
         padding: 12px 15px;
     }
     
-    /* Footer on mobile */
+
     .custom-footer {
         margin: 10px;
         padding: 10px;
     }
 }
 
-/* Desktop only: iOS Safari specific fixes */
+
 @media (min-width: 769px) {
     @supports (-webkit-touch-callout: none) {
         .wy-nav-side {
@@ -841,6 +840,83 @@ footer, .rst-footer-buttons {
             transform: translateX(-100%) translateZ(0);
         }
     }
+}
+
+
+
+.highlight {
+    background-color: #fffef5 !important;
+    border: 1px solid #e0d8c0 !important;
+    border-radius: 4px !important;
+    padding: 12px !important;
+}
+
+.highlight code {
+    background: transparent !important;
+    border: none !important;
+    color: #333333 !important;
+    font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace !important;
+}
+
+
+.highlight .c1,     /* Comment.Single */
+.highlight .cm {    /* Comment.Multiline */
+    color: #808080 !important;
+    font-style: italic !important;
+}
+
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kt,
+.highlight .kc {
+    color: #c0504d !important;
+    font-weight: bold !important;
+}
+
+.highlight .n, 
+.highlight .nv,
+.highlight .nb {
+    color: #333333 !important;
+}
+
+.highlight .s,
+.highlight .s1,
+.highlight .s2,
+.highlight .sa {
+    color: #a31515 !important;
+}
+
+.highlight .m, 
+.highlight .mf,
+.highlight .mh, 
+.highlight .mi,     /* Number.Integer */
+.highlight .mb,     /* Number.Bin */
+.highlight .mo {    /* Number.Oct */
+    color: #ae81ff !important;
+}
+
+.highlight .o,      /* Operator */
+.highlight .ow {    /* Operator.Word */
+    color: #c0504d !important;
+}
+
+.highlight .p {     /* Punctuation */
+    color: #333333 !important;
+}
+
+.highlight .nx,     /* Name.Other */
+.highlight .bp {    /* Name.Builtin.Pseudo */
+    color: #333333 !important;
+}
+
+.highlight .se {    /* String.Escape */
+    color: #8b4513 !important;
+}
+
+.highlight .err {   /* Error */
+    color: #dc3545 !important;
+    background-color: #ffe8e6 !important;
 }
 
 /* Copy Code Button */
@@ -879,9 +955,7 @@ a[href*="_sources"] {
     display: none !important;
 }
 
-/* ========================================
-   Custom Footer
-   ======================================== */
+/*   Custom Footer*/
 
 .custom-footer {
     text-align: center;

@@ -30,7 +30,7 @@ Anvil addresses this lack of timing contracts through an abstraction of communic
 
 At the hardware level, a channel is still just a bundle of wires that two components use to exchange values. However, the definition explicitly labels the guarantees and assumptions regarding the *lifetime* of those messages. For the same interface as above, the communication can be expressed in Anvil using the following channel definition:
 
-```rs
+```anvil
 chan foobar_ch {
     left  req : (logic[8]@res),
     right res : (logic[8]@#1)
