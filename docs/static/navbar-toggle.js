@@ -1,6 +1,5 @@
 // Navbar Toggle Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Create the toggle button
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'navbar-toggle-btn';
     toggleBtn.innerHTML = '☰';
@@ -9,17 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.body.appendChild(toggleBtn);
     
-    // Check for saved preference
-    const navHidden = localStorage.getItem('navHidden') === 'true';
-    if (navHidden) {
-        document.body.classList.add('nav-hidden');
-        toggleBtn.innerHTML = '☰';
-    } else {
-        toggleBtn.innerHTML = '—';
+
+    if (window.innerWidth > 768) {
+        const navHidden = localStorage.getItem('navHidden') === 'true';
+        if (navHidden) {
+            document.body.classList.add('nav-hidden');
+            toggleBtn.innerHTML = '☰';
+        } else {
+            toggleBtn.innerHTML = '—';
+        }
     }
     
-    // Toggle handler
-    toggleBtn.addEventListener('click', function() {
+    function handleToggle(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+
+        if (window.innerWidth <= 768) return;
+        
         document.body.classList.toggle('nav-hidden');
         const isHidden = document.body.classList.contains('nav-hidden');
         
@@ -28,5 +34,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Save preference
         localStorage.setItem('navHidden', isHidden);
+    }
+    
+    toggleBtn.addEventListener('click', handleToggle);
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+            document.body.classList.remove('nav-hidden');
+            toggleBtn.innerHTML = '☰';
+        } else {
+            // Restore saved preference on desktop
+            const navHidden = localStorage.getItem('navHidden') === 'true';
+            if (navHidden) {
+                document.body.classList.add('nav-hidden');
+                toggleBtn.innerHTML = '☰';
+            } else {
+                toggleBtn.innerHTML = '—';
+            }
+        }
     });
 });

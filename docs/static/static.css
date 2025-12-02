@@ -29,22 +29,24 @@ body:not(.nav-hidden) .navbar-toggle-btn {
     left: 310px;
 }
 
-/* When sidebar is hidden */
-body.nav-hidden .wy-nav-side {
-    transform: translateX(-100%);
-}
 
-body.nav-hidden .wy-nav-content-wrap {
-    margin-left: 0 !important;
-}
+@media (min-width: 769px) {
+    body.nav-hidden .wy-nav-side {
+        transform: translateX(-100%);
+    }
 
-body.nav-hidden .wy-nav-content {
-    max-width: 100% !important;
-    padding: 2rem 4rem !important;
-}
+    body.nav-hidden .wy-nav-content-wrap {
+        margin-left: 0 !important;
+    }
 
-body.nav-hidden .navbar-toggle-btn {
-    left: 10px;
+    body.nav-hidden .wy-nav-content {
+        max-width: 100% !important;
+        padding: 2rem 4rem !important;
+    }
+
+    body.nav-hidden .navbar-toggle-btn {
+        left: 10px;
+    }
 }
 
 
@@ -591,12 +593,145 @@ footer, .rst-footer-buttons {
     }
     
     .anvil-run-btn,
-    .anvil-reset-btn {
+    .anvil-reset-btn,
+    .anvil-copy-btn {
         width: 100%;
+        margin-right: 0;
+        margin-bottom: 6px;
     }
     
     .anvil-output-content {
         max-height: 300px;
+    }
+}
+
+/* ========================================
+   Mobile / iOS Safari Fixes
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Fix mobile header bar */
+    .wy-nav-top {
+        background-color: #c0504d !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 10px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+    }
+    
+    /* Fix hamburger menu alignment */
+    .wy-nav-top i {
+        color: white !important;
+        font-size: 24px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix title alignment */
+    .wy-nav-top a {
+        color: white !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        padding-left: 5px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Hide our custom toggle on mobile - use default */
+    .navbar-toggle-btn {
+        display: none !important;
+    }
+    
+    /* Fix sidebar on mobile - IMPORTANT: Don't override left positioning */
+    .wy-nav-side {
+        background-color: #fffef0 !important;
+        /* RTD uses left: -300px by default, left: 0 when open */
+    }
+    
+    /* Remove any conflicting transforms that might break mobile nav */
+    body.nav-hidden .wy-nav-side {
+        transform: none !important;
+        -webkit-transform: none !important;
+    }
+    
+    /* Let RTD handle mobile nav positioning */
+    .wy-nav-side {
+        background-color: #fffef0 !important;
+        transition: left 0.3s ease !important;
+        transform: none !important;
+    }
+    
+    .wy-nav-content-wrap {
+        transition: left 0.3s ease !important;
+    }
+    
+    /* Content area adjustments */
+    .wy-nav-content {
+        padding: 1rem !important;
+        max-width: 100% !important;
+    }
+    
+    /* Fix headings on mobile */
+    h1, h2, h3, h4, h5, h6,
+    .rst-content h1, .rst-content h2, .rst-content h3 {
+        padding: 6px 10px !important;
+        font-size: 1.2em !important;
+    }
+    
+    /* Fix code blocks on mobile */
+    pre, code {
+        font-size: 12px !important;
+        word-break: break-word !important;
+    }
+    
+    div.highlight {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Fix playground widget on mobile */
+    .anvil-playground-widget {
+        margin: 10px 0;
+    }
+    
+    .anvil-editor-section .CodeMirror {
+        min-height: 150px;
+        font-size: 12px !important;
+    }
+    
+    /* Better touch targets */
+    .anvil-tab {
+        padding: 12px 15px;
+    }
+    
+    /* Footer on mobile */
+    .custom-footer {
+        margin: 10px;
+        padding: 10px;
+    }
+}
+
+/* Desktop only: iOS Safari specific fixes */
+@media (min-width: 769px) {
+    @supports (-webkit-touch-callout: none) {
+        .wy-nav-side {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+        
+        body.nav-hidden .wy-nav-side {
+            -webkit-transform: translateX(-100%) translateZ(0);
+            transform: translateX(-100%) translateZ(0);
+        }
     }
 }
 
