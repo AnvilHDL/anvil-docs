@@ -1,18 +1,47 @@
 .. AnvilHDL Documentation master file
 
 Welcome to AnvilHDL Documentation!
-================================================
+====================================
 
-`Anvil <https://github.com/jasonyu1996/anvil>`_ is a general-purpose hardware description language (HDL), that ensure timing safety at compile time. It can be tried without installation at the `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_.
+`Anvil <https://github.com/jasonyu1996/anvil>`_ is a general-purpose hardware description language (HDL) that statically guarantees **timing safety** -- the absence of timing hazards, at compile time using a novel type system.
 
+In traditional HDLs, signals may unintentionally change when their underlying registers are updated, making it difficult to guarantee the stability of intermediate values across multiple clock cycles. 
+Anvil eliminates this class of errors by making the timing relationships between the creation and use of values explicit, and by enforcing that values are used only when they are semantically valid.
+At the same time, Anvil gives designers full control over state-storing elements (registers) and cycle-level latency.
+Anvil compiles to synthesizable SystemVerilog and has demonstrated comparable **area, power, and frequency** to handwritten SystemVerilog designs in practice, while incurring **no additional clock-cycle latency**.
+
+
+You can try Anvil without installation at `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_,
+or install it locally by following the :doc:`installation` guide.
+
+Citation
+--------
+Anvil has been accepted to apear at `ASPLOS 2026 <https://asplos-conference.org/asplos2026/>`_. If you use Anvil in your research, please use the following citation:
+
+.. code-block:: bibtex
+
+   @article{yu2025anvil,
+      title={Anvil: A General-Purpose Timing-Safe Hardware Description Language},
+      author={Yu, Jason Zhijingcheng and Jha, Aditya Ranjan and Mathur, Umang and Carlson, Trevor E and Saxena, Prateek},
+      journal={arXiv preprint arXiv:2503.19447},
+      year={2025}
+   }
+
+Documentation Overview
+----------------------
+
+This documentation is organized as follows:
+
+* **Language Reference** - An up-to-date description of Anvil's syntax and language features.
+* **Getting Started** - A guided tutorial to help you get started with Anvil, including interactive examples and practice problems.
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Language Reference
 
+   installation
    languageReference
-
 
 .. toctree::
    :maxdepth: 2
@@ -21,11 +50,21 @@ Welcome to AnvilHDL Documentation!
    background
    helloWorld
    communication
-   
-
+   examples
 
 Quick Links
 -----------
 
-* :ref:`genindex`
-* :ref:`search`
+* `Research Paper Preprint <https://arxiv.org/abs/2406.12345>`_
+* `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_
+* `Anvil GitHub Repository <https://github.com/jasonyu1996/anvil>`_
+
+
+Contact Us
+----------
+
+* `Jason Zhijingcheng Yu <https://www.comp.nus.edu.sg/~yuz1996/>`_
+* `Aditya Ranjan Jha <https://arj4web.github.io/contact/>`_
+* `Umang Mathur <https://www.comp.nus.edu.sg/~umathur/>`_
+* `Trevor E. Carlson <https://www.comp.nus.edu.sg/~tcarlson/>`_
+* `Prateek Saxena <https://www.comp.nus.edu.sg/~prateeks/>`_

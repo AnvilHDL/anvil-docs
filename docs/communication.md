@@ -470,5 +470,3 @@ Some combinations are semantically ill-formed, such as:
 (As a hint: consider whether it is always possible for two fixed but mismatched schedules to remain synchronized.)
 
 Finally, while some additional patterns are theoretically valid, they are not yet supported in the current version of Anvil. We plan to extend the supported synchronization patterns in future versions of the language.
-
----

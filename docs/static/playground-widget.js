@@ -19,6 +19,7 @@ class AnvilPlayground {
                         <button class="anvil-run-btn" title="Run this code">▶ Run</button>
                         <button class="anvil-stop-btn" title="Stop execution" style="display: none;">⬛ Stop</button>
                         <button class="anvil-reset-btn" title="Reset to original">↺ Reset</button>
+                        <button class="anvil-copy-btn" title="Copy code to clipboard">📋 Copy</button>
                         <label class="anvil-option">
                             <input type="checkbox" class="anvil-disable-lt">
                             Disable lifetime checks
@@ -59,6 +60,9 @@ class AnvilPlayground {
                 lineWrapping: true,
                 autofocus: false,
                 viewportMargin: Infinity,
+                inputStyle: 'contenteditable',
+                readOnly: false,
+                dragDrop: false,
             });
             this.editor.setValue(this.code);
         } else {
@@ -74,10 +78,13 @@ class AnvilPlayground {
         const runBtn = this.container.querySelector('.anvil-run-btn');
         const stopBtn = this.container.querySelector('.anvil-stop-btn');
         const resetBtn = this.container.querySelector('.anvil-reset-btn');
+        const copyBtn = this.container.querySelector('.anvil-copy-btn');
         const tabs = this.container.querySelectorAll('.anvil-tab');
 
         runBtn.addEventListener('click', () => this.runCode());
         stopBtn.addEventListener('click', () => this.stopExecution());
+        resetBtn.addEventListener('click', () => this.resetCode());
+        copyBtn.addEventListener('click', () => this.copyCode());
         resetBtn.addEventListener('click', () => this.resetCode());
 
         tabs.forEach(tab => {
@@ -116,6 +123,26 @@ class AnvilPlayground {
             const editor = this.container.querySelector('.anvil-code-editor');
             editor.value = this.code;
         }
+    }
+
+    copyCode() {
+        const code = this.editor ? this.editor.getValue() : this.container.querySelector('.anvil-code-editor').value;
+        const copyBtn = this.container.querySelector('.anvil-copy-btn');
+        
+        navigator.clipboard.writeText(code).then(() => {
+            copyBtn.innerHTML = '✓ Copied!';
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+                copyBtn.innerHTML = '📋 Copy';
+                copyBtn.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            copyBtn.innerHTML = 'Failed!';
+            setTimeout(() => {
+                copyBtn.innerHTML = '📋 Copy';
+            }, 2000);
+        });
     }
 
     stopExecution() {

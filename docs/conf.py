@@ -60,6 +60,7 @@ html_js_files = [
     ('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js', {'priority': 101}),
     ('playground-widget.js', {'priority': 500}),
     ('navbar-toggle.js', {'priority': 501}),
+    ('copy-code.js', {'priority': 502}),
 ]
 
 # -- Extension configuration -------------------------------------------------

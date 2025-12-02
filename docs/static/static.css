@@ -1,6 +1,4 @@
-/* ========================================
-   Navbar Toggle Button
-   ======================================== */
+/* Navbar Toggle Button */
 
 .navbar-toggle-btn {
     position: fixed;
@@ -10,8 +8,8 @@
     background: #c0504d;
     color: white;
     border: none;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 20px;
@@ -49,7 +47,7 @@ body.nav-hidden .navbar-toggle-btn {
     left: 10px;
 }
 
-/* Smooth transition for sidebar */
+
 .wy-nav-side {
     transition: transform 0.3s ease;
 }
@@ -91,7 +89,7 @@ p {
     line-height: 1.7 !important;
 }
 
-/* Sidebar - light yellow theme */
+/* Sidebar */
 .wy-nav-side {
     background-color: #fffef0 !important;
     border-right: 1px solid #e0e0e0 !important;
@@ -146,23 +144,23 @@ p {
 
 /* Links */
 a {
-    color: #c0504d !important; /* Brick red */
+    color: #c0504d !important;
 }
 
 a:hover {
-    color: #CB9D06 !important; /* Yellow-Occur color */
+    color: #CB9D06 !important;
 }
 
 .rst-content a:visited {
     color: #904040 !important;
 }
 
-/* Headings - Brick Red */
+/* Headings*/
 h1, h2, h3, h4, h5, h6,
 .rst-content h1, .rst-content h2, .rst-content h3, 
 .rst-content h4, .rst-content h5, .rst-content h6 {
-    color: #c0504d !important; /* Brick red */
-    background-color: #fff9e6 !important; /* Light yellow background */
+    color: #c0504d !important;
+    background-color: #fff9e6 !important;
     padding: 8px 12px !important;
     border-left: 5px solid #c0504d !important;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -193,7 +191,7 @@ code.literal {
 /* Buttons */
 .btn, .btn-neutral, .rst-content .btn, .rst-content .btn-neutral,
 .wy-btn, .rst-content .wy-btn, a.btn, a.btn-neutral {
-    background-color: #c0504d !important; /* Brick red */
+    background-color: #c0504d !important;
     color: #ffffff !important;
     border: none !important;
 }
@@ -211,8 +209,8 @@ code.literal {
 /* Admonitions/Notes - Light red theme with highlighting */
 .admonition, .note, .attention, .caution, .danger, .error, .hint, 
 .important, .tip, .warning {
-    background-color: #ffe8e6 !important; /* Light red background */
-    border-left: 4px solid #c0504d !important; /* Brick red */
+    background-color: #ffe8e6 !important;
+    border-left: 4px solid #c0504d !important;
     color: #404040 !important;
     padding: 12px 16px !important;
     border-radius: 4px !important;
@@ -234,8 +232,8 @@ code.literal {
 
 /* Blockquotes - styled like highlighted note blocks */
 blockquote, .rst-content blockquote {
-    background-color: #ffe8e6 !important; /* Light red background */
-    border-left: 4px solid #c0504d !important; /* Brick red */
+    background-color: #ffe8e6 !important;
+    border-left: 4px solid #c0504d !important;
     padding: 8px 12px !important;
     margin: 12px 0 !important;
     border-radius: 3px !important;
@@ -266,8 +264,8 @@ blockquote p strong:first-child {
 }
 
 .rst-content table.docutils th {
-    background-color: #fff9e6 !important; /* Light yellow */
-    color: #c0504d !important; /* Brick red */
+    background-color: #fff9e6 !important;
+    color: #c0504d !important;
     border: 1px solid #e0e0e0 !important;
 }
 
@@ -283,7 +281,7 @@ footer, .rst-footer-buttons {
 
 /* Top navigation breadcrumbs */
 .wy-breadcrumbs li a {
-    color: #c0504d !important; /* Brick red */
+    color: #c0504d !important;
 }
 
 .wy-breadcrumbs li {
@@ -295,9 +293,7 @@ footer, .rst-footer-buttons {
     color: #c0504d !important;
 }
 
-/* ========================================
-   Interactive Anvil Playground Styles
-   ======================================== */
+/* Interactive Anvil Playground Widget */
 
 .anvil-playground-widget {
     border: 2px solid #c0504d;
@@ -325,25 +321,34 @@ footer, .rst-footer-buttons {
 
 .anvil-run-btn,
 .anvil-reset-btn,
-.anvil-stop-btn {
-    background: #c0504d;
+.anvil-stop-btn,
+.anvil-copy-btn {
     color: white;
     border: none;
-    padding: 8px 18px;
+    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background 0.2s;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background 0.2s, transform 0.1s;
     margin-right: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.anvil-run-btn {
+    background: #c0504d;
 }
 
 .anvil-run-btn:hover:not(:disabled) {
     background: #a0403d;
+    transform: translateY(-1px);
 }
 
 .anvil-stop-btn {
     background: #dc3545;
+
 }
 
 .anvil-stop-btn:hover {
@@ -352,11 +357,24 @@ footer, .rst-footer-buttons {
 
 .anvil-reset-btn {
     background: #6c757d;
-    margin-right: 12px;
 }
 
 .anvil-reset-btn:hover {
     background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.anvil-copy-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.anvil-copy-btn:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+    transform: translateY(-1px);
+}
+
+.anvil-copy-btn.copied {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
 }
 
 .anvil-run-btn:disabled,
@@ -429,6 +447,39 @@ footer, .rst-footer-buttons {
 
 .anvil-editor-section .CodeMirror-scroll {
     min-height: 250px;
+}
+
+
+.anvil-editor-section .CodeMirror,
+.anvil-editor-section .CodeMirror * {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+}
+
+.anvil-editor-section .CodeMirror-selected {
+    background: #3390ff55 !important;
+}
+
+.anvil-editor-section .CodeMirror-focused .CodeMirror-selected {
+    background: #3390ff77 !important;
+}
+
+
+.anvil-editor-section .CodeMirror-code::selection,
+.anvil-editor-section .CodeMirror-code *::selection {
+    background: #3390ff77 !important;
+}
+
+.anvil-editor-section .CodeMirror-code::-moz-selection,
+.anvil-editor-section .CodeMirror-code *::-moz-selection {
+    background: #3390ff77 !important;
+}
+
+
+.anvil-editor-section .CodeMirror-cursor {
+    border-left: 2px solid #333 !important;
 }
 
 .anvil-editor-section .CodeMirror-gutters {
@@ -527,7 +578,7 @@ footer, .rst-footer-buttons {
     font-style: italic;
 }
 
-/* Syntax highlighting for code blocks (optional enhancement) */
+
 .anvil-code-editor::selection {
     background: #3390ff44;
 }
@@ -547,4 +598,66 @@ footer, .rst-footer-buttons {
     .anvil-output-content {
         max-height: 300px;
     }
+}
+
+/* Copy Code Button */
+
+.copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    background: #404040;
+    color: #fff;
+    border: 1px solid #606060;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+}
+
+div.highlight:hover .copy-code-btn,
+pre.literal-block:hover .copy-code-btn {
+    opacity: 1;
+}
+
+.copy-code-btn:hover {
+    background: #505050;
+}
+
+.copy-code-btn.copied {
+    background: #28a745;
+}
+
+.wy-breadcrumbs-aside,
+a[href*="_sources"] {
+    display: none !important;
+}
+
+/* ========================================
+   Custom Footer
+   ======================================== */
+
+.custom-footer {
+    text-align: center;
+    padding: 12px 15px;
+    margin-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #fff9e655 0%, #ffe8cc55 100%);
+    border-radius: 8px;
+}
+
+.custom-footer a {
+    color: #c0504d;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.custom-footer a:hover {
+    color: #a0403d;
+    text-decoration: underline;
 }
