@@ -39,7 +39,7 @@ myst_enable_extensions = [
     "amsmath",     # Enable LaTeX math environments
 ]
 
-templates_path = ['_templates']
+templates_path = ['templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
