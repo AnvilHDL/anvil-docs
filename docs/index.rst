@@ -55,7 +55,7 @@ This documentation is organized as follows:
 Quick Links
 -----------
 
-* `Research Paper Preprint <https://arxiv.org/abs/2406.12345>`_
+* `Research Paper Preprint <https://arxiv.org/abs/2503.19447>`_
 * `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_
 * `Anvil GitHub Repository <https://github.com/jasonyu1996/anvil>`_
 
