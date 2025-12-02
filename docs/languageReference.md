@@ -482,9 +482,6 @@ Recursive threads define general recursive behavior in a process. They generaliz
 recursive-thread ::= "recursive" "{" expression "}"
 ```
 
-Here is your section **lightly polished for clarity, flow, and coherence**, without changing the structure or adding new concepts. I kept your format and intent intact.
-
----
 
 ## 7. Registers
 

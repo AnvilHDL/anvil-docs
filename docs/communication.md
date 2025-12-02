@@ -327,3 +327,148 @@ To fix this violation, we must ensure that `data` is consumed before any cycle-a
 ```
 
 ---
+
+## Synchronization Patterns
+
+In the previous examples, we observed that both the sender and the receiver can block during communication. This type of interface is known as a latency-insensitive interface. Such interfaces are particularly useful when the communication latency is variable or unknown at design time.
+
+However, in many practical designs, the communication latency is fixed and known in advance. In these cases, Anvil allows the designer to define channels with explicit synchronization patterns that specify exact timing relationships between messages. These synchronization patterns enable the compiler to decide when handshake signals are required and when they can be safely omitted.
+
+Synchronization patterns can be classified into four cases, depending on whether the sender and the receiver can guarantee a fixed communication frequency:
+
+- **Case 1:** Sender: *dynamic*, Receiver: *dynamic* &rarr; Latency-insensitive interface (as shown earlier)
+
+- **Case 2:** Sender: *static*, Receiver: *dynamic* &rarr; Acknowledgement required from the receiver
+
+- **Case 3:** Sender: *static*, Receiver: *static* &rarr; No handshake required
+
+- **Case 4:** Sender: *dynamic*, Receiver: *static* &rarr; Valid signal required from the sender
+
+For example, consider the following example that illustrates the use of synchronization patterns (particularly Cases 2 and 3):
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+      chan foobar_ch {
+          left req : (logic[8]@#1) @dyn - @#1,
+          right res : (logic[8]@#1) @#req - @#req
+      }
+      func is_even(x){
+        x & 8'd1 == 8'd0
+      }
+      func answer_to_universe(x){
+        if (call is_even(x)){
+          8'd42
+        }
+        else{
+          8'd0
+        }
+      }
+
+      proc Foo(ep : left foobar_ch) {
+          reg cycle_count : logic[8];
+          reg prev_x : logic[8];
+          loop {
+              if(call is_even(*cycle_count)){
+                  cycle 2 >>
+              }
+              else{
+                  cycle 3 >>
+              } >>
+              let x = recv ep.req >>
+              let ans = call answer_to_universe(*prev_x) >>
+              send ep.res (ans) >>
+              dprint"[Cycle %d] Received %d , Sent %d" (*cycle_count, *prev_x, ans) >>
+              set prev_x := x
+          }
+          loop{
+            set cycle_count := *cycle_count + 1
+          }
+      }
+
+
+     proc Top(){
+        chan ep_le -- ep_ri : foobar_ch;
+        spawn Foo(ep_le);
+        reg input : logic[8];
+        reg counter : logic[8];
+        loop {
+            send ep_ri.req (*input) >>
+            let data = recv ep_ri.res >>
+            dprint"[Cycle %d] The answer to the universe is %d" (*counter, data) >>
+            set input:= *input + 1
+        }
+        loop{
+          set counter := *counter + 1
+        }
+        loop{
+          cycle 10 >>
+          dfinish
+        }
+      }
+```
+
+In this example, the synchronization pattern for the `req` message is specified as:
+
+```
+@dyn - @#1
+```
+
+This indicates that the left endpoint (here, the receiver) cannot guarantee a fixed communication frequency and therefore acknowledges messages dynamically. In contrast, the right endpoint (sender) promises that it is ready to send a new `req` message exactly one cycle after the previous `req`.
+
+From this information, the compiler can infer that the sender must wait for an acknowledgement from the receiver before transmitting the next `req` message. Consequently, it automatically generates the necessary handshake signals. At the same time, the type system enforces that the sender does not delay the next `req` beyond one cycle after the previous one.
+
+For the `res` message, the synchronization pattern is:
+
+```
+@#req - @#req
+```
+
+This pattern specifies that both endpoints promise to communicate `res` in the exact same cycle as the corresponding `req`. Since both sides guarantee a fixed schedule, no handshake is required for `res`. Instead, the compiler only needs to ensure that both sides respect this fixed timing relationship.
+
+As a result, if you run this program as written, the type checker verifies that all synchronization constraints are satisfied, and the program executes without any unexpected behavior.
+
+
+If you now experiment by:
+
+- Registering the `ans` value in the `Foo` process before sending it, or
+- Delaying the `send` of `req` in the `Top` process,
+
+the synchronization patterns will be violated. In both cases, the type checker will detect the mismatches and reject the program. You are encouraged to try these modifications to gain a better intuition for how synchronization patterns constrain communication.
+
+
+The general syntax of synchronization patterns is defined as follows:
+
+```bnf
+sync_pattern ::= '@' left_side_pattern '-' '@' right_side_pattern
+left_side_pattern ::= '#'<n> | '#'<msg_id> '+' <n> | 'dyn'
+right_side_pattern ::= '#'<n> | '#'<msg_id> '+' <n> | 'dyn'
+```
+
+Here:
+
+- `<n>` is a non-negative integer representing a number of cycles.
+- `<msg_id>` is a message identifier defined in the same channel.
+
+The `left_side_pattern` specifies the timing behavior promised by the left endpoint, while the `right_side_pattern` specifies the timing behavior promised by the right endpoint.
+
+However, only a restricted set of combinations are currently considered well-formed:
+
+1. `@dyn - @#1`
+2. `@#1 - @dyn`
+3. `@#1 - @#1`
+4. `@#msg + n - @#msg + n`
+5. `@dyn - @dyn` (equivalent to writing no synchronization pattern)
+
+Some combinations are semantically ill-formed, such as:
+
+- `@dyn - @#n` for `n > 1`
+- `@#n - @#m` for `n ≠ m`
+- etc.
+
+(As a hint: consider whether it is always possible for two fixed but mismatched schedules to remain synchronized.)
+
+Finally, while some additional patterns are theoretically valid, they are not yet supported in the current version of Anvil. We plan to extend the supported synchronization patterns in future versions of the language.
+
+---
