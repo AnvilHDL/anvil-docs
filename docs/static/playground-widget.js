@@ -48,12 +48,12 @@ class AnvilPlayground {
             </div>
         `;
         
-        // Initialize CodeMirror for line numbers only
+        // Initialize CodeMirror
         const editorTextarea = this.container.querySelector('.anvil-code-editor');
         if (typeof CodeMirror !== 'undefined') {
             this.editor = CodeMirror.fromTextArea(editorTextarea, {
-                mode: null,  // No syntax highlighting
-                theme: 'default',
+                mode: 'anvil',
+                theme: 'anvil-light',
                 lineNumbers: true,
                 indentUnit: 4,
                 tabSize: 4,
