@@ -1,4 +1,4 @@
-# Tour of Anvil Syntax and Features
+# Tour of Anvil : Syntax and Features
 
 
 We now present a detailed tour of all language constructs in Anvil. We illustrate each construct with small code examples and explain their semantics.
