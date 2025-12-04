@@ -17,7 +17,7 @@ class AnvilPlayground {
                 <div class="anvil-editor-section">
                     <div class="anvil-toolbar">
                         <button class="anvil-run-btn" title="Run this code">▶ Run</button>
-                        <button class="anvil-stop-btn" title="Stop execution" style="display: none;">⬛ Stop</button>
+                        <button class="anvil-stop-btn" title="Stop execution" style="display: none;"> 🔲 Stop</button>
                         <button class="anvil-reset-btn" title="Reset to original">↺ Reset</button>
                         <button class="anvil-copy-btn" title="Copy code to clipboard">📋 Copy</button>
                         <label class="anvil-option">
