@@ -16,16 +16,18 @@ This is known as the **behavioral description** of the adder. There is also a **
 
 At first glance, this SystemVerilog code might look like a regular software program. It appears as though we are assigning a value to an output reference in a function. But that is not the case.  
 
-In software, you invoke a function using a call primitive, transferring control flow to it. In hardware description, however, module instantiation does **not** mean transferring control. Instead, it follows a **communication paradigm** -- modules interact through signals (wires).
-
-
-The signals are always connected and can be read anytime. The `assign` statement in the example above represents **continuous assignment**-- meaning the value of `sum` is always the sum of `a` and `b`. There is no delay; the computation happens **immediately**. This is what is known as **combinational logic** in hardware. So whenever `a` or `b` changes, `sum` updates instantaneously. Essentially, the module behaves like a circuit that continuously computes the sum of its inputs.
+In software, you invoke a function using a call primitive, transferring control flow to it. In hardware description, however, module instantiation does **not** mean transferring control. Instead, it follows a communication paradigm -- modules interact through signals (wires).
 
 <div align="center">
 
 ![](assets/HDL_module.jpg)
 
 </div>  
+
+
+The signals are always connected and can be read anytime. The `assign` statement in the example above represents continuous assignment -- meaning the value of `sum` is always the sum of `a` and `b`. There is no delay; the computation happens immediately. This is what is known as combinational logic in hardware. So whenever `a` or `b` changes, `sum` updates instantaneously. Essentially, the module behaves like a circuit that continuously computes the sum of its inputs.
+
+
 
 ## Modelling Hardware Behaviours
 
@@ -56,8 +58,6 @@ endmodule
 
 This code describes a component named `counter`. The component takes a clock signal `clk` and a reset signal `rst` as inputs. It produces an output signal `cycle_count`, which represents the current counter value.
 
-The body of the module first declares two local variables, `cnt_n` and `cnt_q`. Here, both are declared using `logic`. In practice, SystemVerilog compilers or simulators infer whether a signal behaves as a wire or a register based on how it is used (as we will also see later). By convention, `s_n` denotes the **next state**, while `s_q` stores the **current state** of the state variable `s` of the component. In this example, the state variable `cnt` is simply storing the counter value.
-
 The body of the module first declares two local variables, `cnt_n` and `cnt_q`. Both are declared using logic. In practice, a SystemVerilog compiler or simulator infers whether a signal behaves as a wire or a register based on how it is used. By convention, `s_n` denotes the next state, while `s_q` stores the current state of the state variable `s` of the component. In this example, the state variable `cnt` simply stores the counter value.
 
 After the declarations, two continuous assignments are defined:
@@ -68,8 +68,6 @@ The first assignment connects the output port `cycle_count` to the internal stat
 The next state `cnt_n` is assigned to the state register `cnt_q` inside the `always_ff` block. The sensitivity list `@(posedge clk or negedge rst)` specifies that the assignment occurs either on the positive edge of the clock `clk` or on the negative edge of the reset signal `rst`. Intuitively, this means that the register is updated either during reset or on each clock cycle. Recall that the output signal `cycle_count` is mapped to the register `cnt_q`. Therefore, from the interacting module's perspective, the component produces a new counter value on every cycle.
 
 In summary, HDLs define a programming paradigm that is different from traditional software abstractions. In this paradigm, the designer describes a state machine. The states are stored in registers. The wires carry intermediate values that are derived from registers or are constant. The interfaces are also modeled using wires. These wires carry values at all times and are generally functions of the internal state.
-
-
 
 
 
@@ -165,11 +163,11 @@ The `case` block inside the `always_comb` block (which defines combinational log
 
 Although understanding the implementation of this multiplier is already somewhat tricky, the lack of human descriptions, comments, or clear naming conventions creates additional challenges for any interfacing module. Several important questions arise for a module that wants to use this multiplier. For instance:
 
-- **How does the top module know when the product is ready?**
+- **How does the Top module know when the product is ready?**
 - **How does the multiplier module know when to start computing? Does it expect new inputs every 8 cycles?**
 - **Without reading the implementation, can an interfacing module answer these questions by looking only at the interface definition?**
 - **Do compilers or synthesis tools help prevent incorrect usage of the module?**
 
 These questions highlight the need for better abstractions in HDLs for describing hardware components. That is where *Anvil* comes in.
 
-> **Note** : The interfacing module is often called the *top* module and will be referred to as such in the rest of this documentation.
+> **Note** : The interfacing module is often called the *Top* module and will be referred to as such in the rest of this documentation.
