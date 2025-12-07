@@ -234,7 +234,7 @@ class AnvilPlayground {
                 if (data.charAt(0) === 'E') {
                     stderrOutput.textContent += data.substring(1);
                     hasError = true;
-                    this.switchTab('stderr');
+                    // this.switchTab('stderr');
                 } else if (data.charAt(0) === 'O') {
                     stdoutOutput.textContent += data.substring(1);
                 }

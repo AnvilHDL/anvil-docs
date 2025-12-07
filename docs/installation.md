@@ -82,20 +82,33 @@ The input files must use the `.anvil` extension.
 
 Following are the available command-line options:
 
-```bash
--verbose            Enable verbose output for debugging
--disable-lt-checks  Disable lifetime and borrow checks
--O <level>          Set optimisation level: 0, 1, or 2 (default: 0)
---help              Display this help message
-```
 
+- `-disable-lt-checks`: Disable lifetime-related checks.
+- `-O <opt-level>`: Specify optimization level. (Currently : 0, 1, 2; Default : 2)
+- `-verbose`: Enable verbose output.
+- `-o <output-file>`: Specify output file name, generates `<output-file>.anvil.sv`  emits to stdout if not provided.
+- `-just-check`: Only type-check the source file without generating code.
+- `-json-output` : Output compilation results in JSON format.
+- `-strict-dtc`: Enable strict data type checks (prevents abstract data types conversion).
+- `-help`: Display help information.
+
+
+> **Note** : The `-O` option currently supports optimization levels 0, 1, 2 for codegen optimizations. However 3 is used for optimizations that may results in not generating `clk` and `reset` signals in the output SystemVerilog code. Useful when generating code for combinational circuits such as ALUs. The compiler infers combinational circuits and warns the user if clk/reset are not generated when optimizations level 3 is used.
 
 **Example Usage**
 
 ```bash
-dune exec anvil -- example.anvil -verbose -O 2
+dune exec anvil -- -verbose -O 2 -o example_output example.anvil 
 ```
 
 This command compiles `example.anvil` with:
 - verbose debug output enabled, and
-- optimisation level set to 2.
+- optimisation level set to 2 (highest codegen optimization).
+- generates output file `example_output.anvil.sv`.
+
+```bash
+dune exec anvil -- -just-check example.anvil
+```
+This command type-checks `example.anvil` without generating code.
+
+
