@@ -1013,6 +1013,37 @@ In this program, we define a function named `max` that takes two parameters, `a`
 
 > **Note:** In current version, functions have all the bindings in the context of the call site in scope, including registers inside processes.
  
+### Cast
+
+Often, data-width mismatches are silently ignored by simulators and compilers in traditional HDLs, which can lead to unintended behavior. Anvil enforces strict data-type checking to prevent such issues, and even supports an option to restrict casts between abstract data types (this restriction is disabled by default). When a conversion is necessary, Anvil provides an explicit cast expression:
+
+```
+cast-expression ::= "<" ( $expression ) "::" $data-type-expression ">"
+```
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    proc Top() {
+        loop{
+            let x = 2'd2 >>
+            let x4 = <(x):: logic[4]> >>
+            let x1 = <(x4):: logic[1]> >>
+            dprint"Casted values: (%b) = | %b | %b" (x, x4, x1) >>
+            dfinish >>
+            cycle 1
+        }
+    }
+```
+
+In this program, the value `2'd2` is first cast to a `logic[4]`, which **extends the bit-width**, producing `4'b0010`. It is then cast to a `logic[1]`, which **truncates the higher-order bits**, resulting in `1'b0`.
+The debug print statement shows the original value and its casted forms.
+
+
+
 
 ### Generate 
 
