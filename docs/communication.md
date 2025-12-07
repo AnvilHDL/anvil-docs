@@ -98,7 +98,7 @@ As a concrete example, consider the following process definition that uses the c
               cycle 1
           }
           loop{
-            set cycle_count := *cycle_count + 1
+            set cycle_count := *cycle_count + 8'd1
           }
       }
 
@@ -110,13 +110,13 @@ As a concrete example, consider the following process definition that uses the c
         reg counter : logic[8];
         loop {
             send ep_ri.req (*input) >>
-            set input:= *input + 1 >>
+            set input:= *input + 8'd1 >>
             let data = recv ep_ri.res >>
             dprint"[Cycle %d] The answer to the universe is %d" (*counter, data) >>
             cycle 1
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
         loop{
           cycle 10 >>
@@ -209,7 +209,7 @@ To fix this error, we need to ensure that the `input` register is not modified u
               cycle 1
           }
           loop{
-            set cycle_count := *cycle_count + 1
+            set cycle_count := *cycle_count + 8'd1
           }
       }
 
@@ -222,12 +222,12 @@ To fix this error, we need to ensure that the `input` register is not modified u
         loop {
             send ep_ri.req (*input) >>
             let data = recv ep_ri.res >>
-            set input:= *input + 1 >>
+            set input:= *input + 8'd1 >>
             dprint"[Cycle %d] The answer to the universe is %d" (*counter, data) >>
             cycle 1
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
         loop{
           cycle 10 >>
@@ -294,7 +294,7 @@ To fix this violation, we must ensure that `data` is consumed before any cycle-a
               cycle 1
           }
           loop{
-            set cycle_count := *cycle_count + 1
+            set cycle_count := *cycle_count + 8'd1
           }
       }
 
@@ -308,11 +308,11 @@ To fix this violation, we must ensure that `data` is consumed before any cycle-a
             send ep_ri.req (*input) >>
             let data = recv ep_ri.res >>
             dprint"[Cycle %d] The answer to the universe is %d" (*counter, data) >>
-            set input:= *input + 1 >>
+            set input:= *input + 8'd1 >>
             cycle 1
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
         loop{
           cycle 10 >>
@@ -371,19 +371,19 @@ For example, consider the following example that illustrates the use of synchron
           reg prev_x : logic[8];
           loop {
               if(call is_even(*cycle_count)){
-                  cycle 2 >>
+                  cycle 2
               }
               else{
-                  cycle 3 >>
+                  cycle 3
               } >>
               let x = recv ep.req >>
               let ans = call answer_to_universe(*prev_x) >>
               send ep.res (ans) >>
-              dprint"[Cycle %d] Received %d , Sent %d" (*cycle_count, *prev_x, ans) >>
+              dprint"[Cycle %d] Received %d previously, Sent %d" (*cycle_count, *prev_x, ans) >>
               set prev_x := x
           }
           loop{
-            set cycle_count := *cycle_count + 1
+            set cycle_count := *cycle_count + 8'd1
           }
       }
 
@@ -397,13 +397,13 @@ For example, consider the following example that illustrates the use of synchron
             send ep_ri.req (*input) >>
             let data = recv ep_ri.res >>
             dprint"[Cycle %d] The answer to the universe is %d" (*counter, data) >>
-            set input:= *input + 1
+            set input:= *input + 8'd1
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
         loop{
-          cycle 10 >>
+          cycle 20 >>
           dfinish
         }
       }

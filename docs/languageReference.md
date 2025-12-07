@@ -627,7 +627,7 @@ For example, consider the following program:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -666,7 +666,7 @@ For example, consider the modified version of the previous program:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -706,9 +706,9 @@ For example:
     proc Top() {
         reg counter : logic[8];
         loop {
-            let cnt = *counter + 1 ;
+            let cnt = *counter + 8'd1 ;
             dprint"[Cycle %d] Hello World in Anvil!" (cnt) >>
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -717,7 +717,7 @@ For example:
     }
 ```
 
-In this program, in each iteration of the loop, the expression `*counter + 1` is evaluated and bound to the identifier `cnt`. The debug print then prints the value of `cnt`.
+In this program, in each iteration of the loop, the expression `*counter + 8'd1` is evaluated and bound to the identifier `cnt`. The debug print then prints the value of `cnt`.
 
 ### If-Else
 
@@ -743,7 +743,7 @@ For example:
     proc Top() {
         reg counter : logic[8];
         loop {
-            if (*counter & 8'd1 == 0) {
+            if (*counter & 8'd1 == 8'd0) {
                 dprint"[Cycle %d] Even cycle" (*counter) >>
                 cycle 3
             } else {
@@ -753,7 +753,7 @@ For example:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -798,7 +798,7 @@ For example:
                 8'd2 => dprint"[Cycle %d] Two" (*counter),
                 _     => dprint"[Cycle %d] Many" (*counter)
             } >>
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -848,7 +848,7 @@ For example, consider the following program:
             } else {
                 dprint"[Cycle %d] Unknown State" (*counter)
             } >>
-            set counter := *counter + 1;
+            set counter := *counter + 8'd1;
             set state := *state + 2'd1
         }
         loop{
@@ -912,7 +912,7 @@ For example, consider the following program:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
     proc Bar<T : type>(ep : left foobar_ch<T>){
@@ -925,7 +925,7 @@ For example, consider the following program:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
     proc Top() {
@@ -969,7 +969,7 @@ For `try` expressions, if the communication can proceed immediately, then the co
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
 
@@ -987,7 +987,7 @@ For `try` expressions, if the communication can proceed immediately, then the co
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
 
@@ -1042,7 +1042,7 @@ For example:
             cycle 1
         }
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
         loop{
             cycle 10 >>
@@ -1055,6 +1055,37 @@ In this program, we define a function named `max` that takes two parameters, `a`
 
 > **Note:** In current version, functions have all the bindings in the context of the call site in scope, including registers inside processes.
  
+### Cast
+
+Often, data-width mismatches are silently ignored by simulators and compilers in traditional HDLs, which can lead to unintended behavior. Anvil enforces strict data-type checking to prevent such issues, and even supports an option to restrict casts between abstract data types (this restriction is disabled by default). When a conversion is necessary, Anvil provides an explicit cast expression:
+
+```
+cast-expression ::= "<" ( $expression ) "::" $data-type-expression ">"
+```
+
+For example:
+
+```{eval-rst}
+.. anvil-playground::
+    :playground-url: https://anvil.capstone.kisp-lab.org
+
+    proc Top() {
+        loop{
+            let x = 2'd2 >>
+            let x4 = <(x):: logic[4]> >>
+            let x1 = <(x4):: logic[1]> >>
+            dprint"Casted values: (%b) = | %b | %b" (x, x4, x1) >>
+            dfinish >>
+            cycle 1
+        }
+    }
+```
+
+In this program, the value `2'd2` is first cast to a `logic[4]`, which **extends the bit-width**, producing `4'b0010`. It is then cast to a `logic[1]`, which **truncates the higher-order bits**, resulting in `1'b0`.
+The debug print statement shows the original value and its casted forms.
+
+
+
 
 ### Generate 
 
@@ -1081,7 +1112,7 @@ For example:
       reg counter : logic[8];
       loop{
             generate_seq (i : 0, 3, 1) {
-                set mem[i] := i >>
+                set mem[i] := <(i):: logic[8]> >>
                 dprint"[Cycle %d][Bar] mem[%d] = %d" (*counter, i, *mem[i])
 
             } >>
@@ -1090,7 +1121,7 @@ For example:
             cycle 1
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
 
     }
@@ -1100,13 +1131,12 @@ For example:
         spawn Bar();
         loop{
             generate (i : 0, 3, 1) {
-                set mem[i] := i
+                set mem[i] := <(i):: logic[8]>
             } >>
-            dprint"[Cycle %d][Top] Memory initialized. (%d , %d, %d, %d)" (*counter, *mem[0], *mem[1], *mem[2], *mem[3]) >>
-            cycle 1
+            dprint"[Cycle %d][Top] Memory initialized. (%d , %d, %d, %d)" (*counter, *mem[0], *mem[1], *mem[2], *mem[3])
         }
         loop{
-          set counter := *counter + 1
+          set counter := *counter + 8'd1
         }
         
     }
@@ -1169,7 +1199,7 @@ These expressions are provided for convenience. Semantically, they can be implem
         }
 
         loop{
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
 

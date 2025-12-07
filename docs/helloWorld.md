@@ -42,9 +42,9 @@ Now it is time to write our first Anvil program!
     proc Top() {
         reg counter : logic[8];
         loop {
-            let cnt = *counter + 1;
+            let cnt = *counter + 8'd1;
             dprint"[Cycle %d] Hello World in Anvil!" (*counter) >>
-            set counter := *counter + 1
+            set counter := *counter + 8'd1
         }
     }
 ```
@@ -71,8 +71,8 @@ To illustrate this, consider the following modified version of the program:
     proc Top() {
         reg counter : logic[8];
         loop {
-            let cnt = *counter + 1;
-            set counter := *counter + 1 >>
+            let cnt = *counter + 8'd1;
+            set counter := *counter + 8'd1 >>
             dprint"[Cycle %d] Hello World in Anvil!" (cnt) >>
             cycle 1
         }
