@@ -28,7 +28,7 @@ class AnvilPlaygroundDirective(SphinxDirective):
                 reg counter : logic[8];
                 loop {
                     dprint"[Cycle %d] Hello World!" (*counter);
-                    set counter := *counter + 1
+                    set counter := *counter + 8'd1
                 }
             }
     """
