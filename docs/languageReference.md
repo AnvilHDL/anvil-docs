@@ -364,6 +364,31 @@ This creates a channel of type `simple_ch<logic[8], 1>` and binds its endpoints 
 `ep_le` (left) and `ep_ri` (right).
 
 ---
+### Array of Channels
+
+Channels may be declared in array form for convenience. This creates multiple instances of a channel type at once, and produces correspondingly indexed endpoint identifiers.
+
+```bnf
+channel-array-creation ::= "chan" identifier "--" identifier ":"
+                            identifier [ param-vals ]
+                            "[" digit+ "]" ";"
+```
+
+The declaration below:
+
+```anvil
+chan ep_le -- ep_ri : simple_ch<logic[8], 1>[4];
+```
+
+creates an array of 4 independent channel instances of type `simple_ch<logic[8], 1>`.
+Their endpoints are bound as follows:
+
+- The left endpoints of the 4 channels become `ep_le[0]`, `ep_le[1]`, `ep_le[2]`, and `ep_le[3]`.
+- The right endpoints become `ep_ri[0]`, `ep_ri[1]`, `ep_ri[2]`, and `ep_ri[3]`.
+
+Each index refers to one concrete channel instance in the array.
+
+
 
 ## 6. Processes
 
@@ -404,17 +429,34 @@ proc Foo<T : type, W : int>( ep : left simple_ch<T, W> ) {
 ```
 
 This defines a process named `Foo` with:
-  - `T`, a data type parameter and `W`, an integer parameter;
-  - one endpoint argument `ep`, which is the left endpoint of the channel class `simple_ch<T, W>`.
 
-The process body contains:
+- `T`, a type parameter,
+- `W`, an integer parameter, and
+- one endpoint argument `ep`, which is the **left** endpoint of the channel class `simple_ch<T, W>`.
+
+The process body may contain:
 
 - channel creations,
 - process spawns,
 - register declarations, and
-- thread definitions
-  
-that together specify the behavior of the process.
+- thread definitions,
+
+which together specify the behavior of the process.
+
+Arrays of endpoints can also be passed to processes in the same way.
+
+For example:
+
+```anvil
+proc FooArray<T : type, W : int>( ep : right simple_ch<T, W>[4] ) {
+    // ... Process body ...
+}
+```
+
+This declares a process `FooArray` that takes an array `ep` consisting of 4 endpoints of type `right simple_ch<T, W>`.
+Inside the process body, the individual endpoints can be accessed as `ep[0]`, `ep[1]`, `ep[2]`, and `ep[3]`.
+
+Each index corresponds to one endpoint of the array passed to the process.
 
 
 ### Process Spawning
