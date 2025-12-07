@@ -57,7 +57,7 @@ Quick Links
 
 * `Research Paper Preprint <https://arxiv.org/abs/2503.19447>`_
 * `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_
-* `Anvil GitHub Repository <https://github.com/jasonyu1996/anvil>`_
+* `Anvil Compiler <https://github.com/jasonyu1996/anvil>`_
 
 
 Contact Us
