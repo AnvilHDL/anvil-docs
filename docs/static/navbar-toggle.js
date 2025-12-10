@@ -3,11 +3,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const quickLinksNav = document.createElement('nav');
     quickLinksNav.className = 'quick-links-navbar';
     quickLinksNav.innerHTML = `
-        <a href="https://arxiv.org/abs/2503.19447" target="_blank" title="Research Paper">Paper</a>
-        <a href="https://anvil.kisp-lab.org/" target="_blank" title="AnvilHDL Playground">Playground</a>
-        <a href="https://github.com/kisp-nus/anvil" target="_blank" title="Anvil Compiler">GitHub</a>
-        <a href="https://anvilhdl.zulipchat.com/" target="_blank" title="Community Chat">Chat</a>
+        <a href="https://github.com/kisp-nus/anvil" target="_blank" title="Anvil Compiler">
+            <img class="quicklink-icon" src="_static/github-mark.svg" alt="GitHub" />
+        </a>
+        <a href="https://anvil.kisp-lab.org/" target="_blank" title="AnvilHDL Playground">
+            <img class="quicklink-icon" src="_static/terminal-logo.svg" alt="Playground" " />
+        </a>
+
+        <a href="https://arxiv.org/abs/2503.19447" target="_blank" title="Research Paper">
+            <img class="quicklink-icon" src="_static/arxiv-logo.svg" alt="Paper" />
+        </a>
+        <a href="https://anvilhdl.zulipchat.com/" target="_blank" title="Community Chat">
+            <img class="quicklink-icon" src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.0.0/zulip.svg" alt="Chat";" />
+        </a>
     `;
+    
     document.body.appendChild(quickLinksNav);
 
 

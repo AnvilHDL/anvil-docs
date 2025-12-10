@@ -47,7 +47,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['static']
+html_static_path = ['static', 'assets']
 # Add custom CSS file(s) to the HTML output. Files must be placed under _static.
 html_css_files = [
     'static.css',
