@@ -16,7 +16,7 @@
     gap: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-radius: 12px;
-    border: 1px solid #e0d8c8;
+    border: 2px solid #d4af37;
     overflow: hidden;
 }
 
@@ -31,13 +31,20 @@
     white-space: nowrap;
     background: transparent;
     border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quick-links-navbar a:hover {
     background: #c0504d;
     color: white;
     text-decoration: none;
-    border-color: #c0504d;
+    border-color: #d4af37;
+}
+
+.quick-links-navbar a:hover .quicklink-icon {
+    filter: brightness(0) invert(1);
 }
 
 .navbar-toggle-btn {
