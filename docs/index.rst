@@ -20,11 +20,16 @@ Anvil has been accepted to apear at `ASPLOS 2026 <https://asplos-conference.org/
 
 .. code-block:: bibtex
 
-   @article{yu2025anvil,
+   @inproceedings{yu2026anvil,
       title={Anvil: A General-Purpose Timing-Safe Hardware Description Language},
       author={Yu, Jason Zhijingcheng and Jha, Aditya Ranjan and Mathur, Umang and Carlson, Trevor E and Saxena, Prateek},
-      journal={arXiv preprint arXiv:2503.19447},
-      year={2025}
+      year={2026},
+      publisher={Association for Computing Machinery},
+      booktitle={Proceedings of the 31st ACM International Conference on Architectural Support for Programming Languages and Operating Systems},
+      series={ASPLOS '26},
+      address={Pittsburgh, PA, USA},
+      url={https://arxiv.org/abs/2503.19447},
+      note={To appear. Preprint available at arXiv:2503.19447}
    }
 
 Documentation Overview
@@ -58,6 +63,7 @@ Quick Links
 * `Research Paper Preprint <https://arxiv.org/abs/2503.19447>`_
 * `AnvilHDL Playground <https://anvil.kisp-lab.org/>`_
 * `Anvil Compiler <https://github.com/kisp-nus/anvil>`_
+* `Community Chat <https://anvilhdl.zulipchat.com/>`_
 
 
 Contact Us

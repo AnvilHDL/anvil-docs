@@ -1,5 +1,32 @@
 // Navbar Toggle Functionality
 document.addEventListener('DOMContentLoaded', function() {
+    const quickLinksNav = document.createElement('nav');
+    quickLinksNav.className = 'quick-links-navbar';
+    quickLinksNav.innerHTML = `
+        <a href="https://arxiv.org/abs/2503.19447" target="_blank" title="Research Paper">Paper</a>
+        <a href="https://anvil.kisp-lab.org/" target="_blank" title="AnvilHDL Playground">Playground</a>
+        <a href="https://github.com/kisp-nus/anvil" target="_blank" title="Anvil Compiler">GitHub</a>
+        <a href="https://anvilhdl.zulipchat.com/" target="_blank" title="Community Chat">Chat</a>
+    `;
+    document.body.appendChild(quickLinksNav);
+
+
+    const menuNav = document.querySelector('.wy-menu.wy-menu-vertical');
+    if (menuNav) {
+        const sidebarLinks = document.createElement('div');
+        sidebarLinks.className = 'toctree-wrapper compound';
+        sidebarLinks.innerHTML = `
+            <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
+            <ul>
+                <li class="toctree-l1"><a class="reference external" href="https://arxiv.org/abs/2503.19447" target="_blank">1. Research Paper</a></li>
+                <li class="toctree-l1"><a class="reference external" href="https://anvil.kisp-lab.org/" target="_blank">2. AnvilHDL Playground</a></li>
+                <li class="toctree-l1"><a class="reference external" href="https://github.com/kisp-nus/anvil" target="_blank">3. Anvil Compiler</a></li>
+                <li class="toctree-l1"><a class="reference external" href="https://anvilhdl.zulipchat.com/" target="_blank">4. Community Chat</a></li>
+            </ul>
+        `;
+        menuNav.insertBefore(sidebarLinks, menuNav.firstChild);
+    }
+
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'navbar-toggle-btn';
     toggleBtn.innerHTML = '☰';
