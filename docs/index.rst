@@ -64,6 +64,7 @@ Quick Links
 * `AnvilHDL Playground <https://anvil.kisp-lab.org/>`_
 * `Anvil Compiler <https://github.com/kisp-nus/anvil>`_
 * `Community Chat <https://anvilhdl.zulipchat.com/>`_
+* `Research Paper Artifacts <https://github.com/kisp-nus/AnvilHDL-Experiments>`_
 
 
 Contact Us
