@@ -74,3 +74,11 @@ Contact Us
 * `Umang Mathur <https://www.comp.nus.edu.sg/~umathur/>`_
 * `Trevor E. Carlson <https://www.comp.nus.edu.sg/~tcarlson/>`_
 * `Prateek Saxena <https://www.comp.nus.edu.sg/~prateeks/>`_
+
+
+**Acknowledgement**: We want to thank |zulip-logo| for sponsoring the community chat channel and allowing us to encourage discussions. Zulip is an organized team chat app designed for efficient communication.
+
+.. |zulip-logo| image:: https://raw.githubusercontent.com/zulip/zulip/main/static/images/logo/zulip-org-logo.svg
+   :height: 20px
+   :alt: Zulip
+   :target: https://zulip.com
