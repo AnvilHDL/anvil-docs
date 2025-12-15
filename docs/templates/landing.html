@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AnvilHDL</title>
+
+    {#- CSS #}
+    {%- for css_file in css_files %}
+        {%- if css_file|attr("filename") %}
+        {{ css_tag(css_file) }}
+        {%- else %}
+        <link rel="stylesheet" href="{{ pathto(css_file, 1)|escape }}" type="text/css" />
+        {%- endif %}
+    {%- endfor %}
+
+    {#
+        "extra_css_files" is an undocumented Read the Docs theme specific option.
+        There is no need to check for ``|attr("filename")`` here because it's always a string.
+        Note that this option should be removed in favor of regular ``html_css_files``:
+        https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_css_files
+    #}
+    {%- for css_file in extra_css_files %}
+        <link rel="stylesheet" href="{{ pathto(css_file, 1)|escape }}" type="text/css" />
+    {%- endfor -%}
+
+    {#- FAVICON #}
+    {%- if favicon_url %}
+        <link rel="shortcut icon" href="{{ favicon_url }}"/>
+    {%- endif %}
+    {%- block extrahead %} {% endblock %}
+    </head>
+    <body>
+        <!-- TODO: the text content is placeholder -->
+        <div class="lp-title-box">
+            <div class="lp-main-title">AnvilHDL</div>
+            <div class="lp-sub-title">Timing-safe Hardware Description Language</div>
+            <nav class="lp-button-bar" aria-label="Quick links">
+                <a class="lp-button secondary" href="/docs/" target="_blank" rel="noopener">
+                    <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+                        <path fill="currentColor" d="M6 2h8l4 4v14a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM14 3.5V7h3.5L14 3.5zM8 9h8v1H8V9zm0 3h8v1H8v-1z"/>
+                    </svg>
+                    Documentation
+                </a>
+                <a class="lp-button secondary" href="https://play.anvil.kisp-lab.org/" target="_blank" rel="noopener">
+                    <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+                        <path fill="currentColor" d="M4 2v20l16-10L4 2z"/>
+                    </svg>
+                    Playground
+                </a>
+                <a class="lp-button secondary" href="https://arxiv.org/abs/2503.19447" target="_blank" rel="noopener">
+                    <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+                        <path fill="currentColor" d="M6 2h7l5 5v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM13 3.5V8h4.5L13 3.5zM8 11h8v1H8v-1zm0 3h8v1H8v-1z"/>
+                    </svg>
+                    Preprint
+                </a>
+                <a class="lp-button secondary" href="https://anvilhdl.zulipchat.com/" target="_blank" rel="noopener">
+                    <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+                        <path fill="currentColor" d="M20 2H4C2.9 2 2 2.9 2 4v12c0 1.1.9 2 2 2h3v3l4-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zM7 12h7v2H7v-2z"/>
+                    </svg>
+                    Zulip
+                </a>
+            </nav>
+        </div>
+        <div class="lp-intro">
+            <p class="lp-intro-text">
+                AnvilHDL is a timing-safe hardware description language that combines clear,
+                concise syntax with explicit timing semantics to produce predictable, verifiable,
+                and synthesizable digital designs.
+            </p>
+        </div>
+        <div class="lp-section-box">
+            <div class="lp-section-heading">Why AnvilHDL</div>
+            <p class="lp-section-intro">AnvilHDL is a timing-safe hardware description language designed for predictable, verifiable digital design. Key features include:</p>
+            <ul class="lp-features">
+                <li><strong>Timing-safe semantics</strong> — explicit, deterministic timing model prevents inadvertent race conditions and makes behavior predictable across synthesis and simulation.</li>
+                <li><strong>Cycle-accurate simulation</strong> — supports fast, reproducible simulations that match the specified timing semantics.</li>
+                <li><strong>Synthesizable constructs</strong> — high-level abstractions that map cleanly to RTL while preserving timing constraints.</li>
+                <li><strong>Modular composition</strong> — hierarchical modules and clear interfaces enable reusable, testable blocks.</li>
+                <li><strong>Concurrency primitives</strong> — built-in constructs for safe concurrent behavior without hidden timing hazards.</li>
+                <li><strong>Formal-verification friendly</strong> — language design encourages properties that are easier to prove and check with formal tools.</li>
+                <li><strong>Clear, concise syntax</strong> — minimal boilerplate for common patterns, improving readability and maintainability.</li>
+                <li><strong>Toolchain integration</strong> — designed to integrate with common simulators, synthesis flows, and CI/testbench ecosystems.</li>
+            </ul>
+            <p class="lp-section-conclusion">Together these features make AnvilHDL well-suited for developing reliable, high-performance hardware with predictable timing and strong verification support.</p>
+        </div>
+
+    </body>
+</html>

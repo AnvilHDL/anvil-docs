@@ -65,6 +65,10 @@ html_js_files = [
     ('copy-code.js', {'priority': 502}),
 ]
 
+html_additional_pages = {
+    'index': 'landing.html',
+}
+
 # -- Extension configuration -------------------------------------------------
 
 # Napoleon settings for Google/NumPy style docstrings

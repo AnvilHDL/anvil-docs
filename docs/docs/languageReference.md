@@ -583,7 +583,7 @@ Anvil provides a variety of expressions to describe hardware behaviour. Below is
 For simulation only, Anvil provides a debug print (akin to `$display` in SystemVerilog) to print messages to the console, and `dfinish` to terminate the simulation.
 
 ```bnf
-debug-print ::= "dprint" string-literal "(" expression ")" 
+debug-print ::= "dprint" string-literal "(" expression ")"
 debug-finish ::= "dfinish"
 ```
 
@@ -616,8 +616,8 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
-    
+    :playground-url: https://anvil.kisp-lab.org
+
     proc Top() {
         reg counter : logic[8];
         loop {
@@ -655,8 +655,8 @@ For example, consider the modified version of the previous program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
-    
+    :playground-url: https://anvil.kisp-lab.org
+
     proc Top() {
         reg counter : logic[8];
         loop {
@@ -701,7 +701,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         reg counter : logic[8];
@@ -738,7 +738,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         reg counter : logic[8];
@@ -787,7 +787,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         reg counter : logic[8];
@@ -816,7 +816,7 @@ binary-arith-expression ::= $expression $binary-arith-operator $expression
 unary-arith-expression ::= $unary-arith-operator $expression
 
 binary-arith-operator ::= + | - | & | | | ^ | < | > | <= | >= | == | != | in
-unary-arith-operator ::= - | ~ 
+unary-arith-operator ::= - | ~
 ```
 
 These expressions evaluate according to their operators. The evaluation completes
@@ -830,8 +830,8 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
-    
+    :playground-url: https://anvil.kisp-lab.org
+
     enum state {
         IDLE,
         BUSY,
@@ -880,7 +880,7 @@ to send the evaluated result of `e` with message `ep.m`, where `ep` is an endpoi
 and `m` is a message identifier. The evaluation completes with result `()`
 once the send occurs.
 
-### Receive 
+### Receive
 
 ```
 recv-expression ::= recv $identifier.$identifier
@@ -897,7 +897,7 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch<T : type> {
         left  req : (T@ req),
@@ -952,7 +952,7 @@ For `try` expressions, if the communication can proceed immediately, then the co
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch<T : type> {
         left  req : (T@ req),
@@ -1025,7 +1025,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     func max(a, b) {
         if a > b {
@@ -1051,10 +1051,10 @@ For example:
     }
 ```
 
-In this program, we define a function named `max` that takes two parameters, `a` and `b`, and returns the maximum of the two. Inside the `Top` process, we call this function with the current value of the `counter` register and the constant `8'd5`. The result is bound to the identifier `sum`, which is then printed in the debug statement.  
+In this program, we define a function named `max` that takes two parameters, `a` and `b`, and returns the maximum of the two. Inside the `Top` process, we call this function with the current value of the `counter` register and the constant `8'd5`. The result is bound to the identifier `sum`, which is then printed in the debug statement.
 
 > **Note:** In current version, functions have all the bindings in the context of the call site in scope, including registers inside processes.
- 
+
 ### Cast
 
 Often, data-width mismatches are silently ignored by simulators and compilers in traditional HDLs, which can lead to unintended behavior. Anvil enforces strict data-type checking to prevent such issues, and even supports an option to restrict casts between abstract data types (this restriction is disabled by default). When a conversion is necessary, Anvil provides an explicit cast expression:
@@ -1067,7 +1067,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         loop{
@@ -1087,7 +1087,7 @@ The debug print statement shows the original value and its casted forms.
 
 
 
-### Generate 
+### Generate
 
 
 Sometimes for repetitive code patterns, it is useful to generate code programmatically. Anvil provides two generate constructs: `generate` and `generate_seq`.
@@ -1104,7 +1104,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     type byte = (logic[8]);
     proc Bar(){
@@ -1138,7 +1138,7 @@ For example:
         loop{
           set counter := *counter + 8'd1
         }
-        
+
     }
 
 ```
@@ -1165,7 +1165,7 @@ These expressions are provided for convenience. Semantically, they can be implem
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch {
         left  req : (logic@#1),
@@ -1195,7 +1195,7 @@ These expressions are provided for convenience. Semantically, they can be implem
             } else {
                 dprint"[Cycle %d][Foo] No receiver ready, skipping send." (*counter) >>
                 cycle 1
-            } 
+            }
         }
 
         loop{
@@ -1221,7 +1221,7 @@ These expressions are provided for convenience. Semantically, they can be implem
             cycle 10 >>
             dfinish
         }
-    } 
+    }
 ```
 
 In this program, the `Foo` process receives requests from the `Top` process and sends responses back. To avoid blocking, it uses `try recv` and `try send` expressions. After sending a response, it uses the `ready` expression to check whether a request was also received in the same cycle, i.e., whether all messages were exchanged during that cycle.

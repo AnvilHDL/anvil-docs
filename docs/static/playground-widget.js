@@ -4,7 +4,7 @@ class AnvilPlayground {
     constructor(containerId, code, playgroundUrl) {
         this.container = document.getElementById(containerId);
         this.code = code;
-        this.playgroundUrl = playgroundUrl || 'https://anvil.capstone.kisp-lab.org';
+        this.playgroundUrl = playgroundUrl || 'https://anvil.kisp-lab.org';
         this.ws = null;
         this.isRunning = false;
         this.init();
@@ -47,7 +47,7 @@ class AnvilPlayground {
                 </div>
             </div>
         `;
-        
+
         // Initialize CodeMirror
         const editorTextarea = this.container.querySelector('.anvil-code-editor');
         if (typeof CodeMirror !== 'undefined') {
@@ -128,7 +128,7 @@ class AnvilPlayground {
     copyCode() {
         const code = this.editor ? this.editor.getValue() : this.container.querySelector('.anvil-code-editor').value;
         const copyBtn = this.container.querySelector('.anvil-copy-btn');
-        
+
         navigator.clipboard.writeText(code).then(() => {
             copyBtn.innerHTML = '✓ Copied!';
             copyBtn.classList.add('copied');
@@ -156,7 +156,7 @@ class AnvilPlayground {
         stopBtn.style.display = 'none';
         runBtn.disabled = false;
         runBtn.textContent = '▶ Run';
-        
+
         const stderrOutput = this.container.querySelector('[data-output="stderr"]');
         stderrOutput.textContent += '\n[Execution interrupted by user]';
         this.switchTab('stderr');
@@ -269,12 +269,12 @@ class AnvilPlayground {
 // Initialize all playground widgets on page load
 function initPlaygrounds() {
     const playgroundElements = document.querySelectorAll('.anvil-playground-container');
-    
+
     playgroundElements.forEach((element) => {
         try {
             // Data attributes are automatically HTML-unescaped by the browser
             const code = element.dataset.code || '';
-            const playgroundUrl = element.dataset.playgroundUrl || 'https://anvil.capstone.kisp-lab.org';
+            const playgroundUrl = element.dataset.playgroundUrl || 'https://anvil.kisp-lab.org';
             new AnvilPlayground(element.id, code, playgroundUrl);
         } catch (e) {
             console.error('Failed to initialize playground:', e);

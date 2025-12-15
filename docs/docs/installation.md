@@ -1,6 +1,6 @@
 # Installation Guide
 
-This document describes how to set up and use the [Anvil](https://github.com/jasonyu1996/anvil) compiler.
+This document describes how to set up and use the [Anvil](https://github.com/kisp-nus/anvil) compiler.
 
 ## 1. Setup Instructions
 
@@ -11,7 +11,7 @@ This document describes how to set up and use the [Anvil](https://github.com/jas
 2. Clone the repository
 
    ```bash
-   git clone https://github.com/jasonyu1996/anvil.git
+   git clone https://github.com/kisp-nus/anvil.git
    ```
 
 3. Navigate to the project directory
@@ -98,7 +98,7 @@ Following are the available command-line options:
 **Example Usage**
 
 ```bash
-dune exec anvil -- -verbose -O 2 -o example_output example.anvil 
+dune exec anvil -- -verbose -O 2 -o example_output example.anvil
 ```
 
 This command compiles `example.anvil` with:

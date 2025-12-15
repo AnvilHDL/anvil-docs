@@ -61,7 +61,7 @@ As a concrete example, consider the following process definition that uses the c
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -172,7 +172,7 @@ To fix this error, we need to ensure that the `input` register is not modified u
    <div style="padding: 10px 0;">
 
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -257,7 +257,7 @@ To fix this violation, we must ensure that `data` is consumed before any cycle-a
    <div style="padding: 10px 0;">
 
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -348,7 +348,7 @@ For example, consider the following example that illustrates the use of synchron
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@#1) @dyn - @#1,

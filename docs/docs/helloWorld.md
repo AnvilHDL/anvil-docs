@@ -37,8 +37,8 @@ Now it is time to write our first Anvil program!
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
-    
+    :playground-url: https://anvil.kisp-lab.org
+
     proc Top() {
         reg counter : logic[8];
         loop {
@@ -56,7 +56,7 @@ Following this declaration, the behavior of the process is defined inside a `loo
 
 The first expression is a `let` binding that creates an intermediate value `cnt`. This value holds the result of incrementing the `counter` register by 1. The `*` operator is used to dereference the value stored in the register. Following this, we have a debug print statement `dprint` that outputs the value of the counter.
 
-The `>>` operator is the *wait* operator. It indicates that the evaluation of the following term proceeds only after the previous term has completed. This operator helps model sequential behavior in hardware processes. The `;` join operator is used to execute multiple expressions in parallel. For instance, ( t_1 ; t_2 ) indicates that both ( t_1 ) and ( t_2 ) execute concurrently, and the combined expression completes when both have finished. This is similar to a fork-join construct in software programming languages.
+The `>>` operator is the *wait* operator. It indicates that the evaluation of the following term proceeds only after the previous term has completed. This operator helps model sequential behavior in hardware processes. The `;` join operator is used to execute multiple expressions in parallel. For instance, `t1; t2` indicates that both `t1` and `t_2` execute concurrently, and the combined expression completes when both have finished. This is similar to a fork-join construct in software programming languages.
 
 In this program, the `let` and `dprint` expressions execute concurrently. The loop waits for both to complete before proceeding to the next expression. In this example, both expressions are *immediate*, meaning they complete without consuming any clock cycles. The final expression is the `set` expression, which updates the value of the `counter` register by incrementing it by 1. This update takes one clock cycle to complete. Therefore, the loop iterates once every cycle.
 
@@ -66,8 +66,8 @@ To illustrate this, consider the following modified version of the program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
-    
+    :playground-url: https://anvil.kisp-lab.org
+
     proc Top() {
         reg counter : logic[8];
         loop {
