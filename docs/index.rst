@@ -1,11 +1,20 @@
 .. AnvilHDL Documentation master file
 
+.. image:: https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil-horizontal.png?raw=true
+   :alt: AnvilHDL logo
+   :class: title-logo
+   :target: https://anvil.kisp-lab.org/
+
+.. raw:: html
+
+   <br>
+
 Welcome to AnvilHDL Documentation!
 ====================================
 
 `Anvil <https://github.com/jasonyu1996/anvil>`_ is a general-purpose hardware description language (HDL) that statically guarantees **timing safety** -- the absence of timing hazards, at compile time using a novel type system.
 
-In traditional HDLs, signals may unintentionally change when their underlying registers are updated, making it difficult to guarantee the stability of intermediate values across multiple clock cycles. 
+In traditional HDLs, signals may unintentionally change when their underlying registers are updated, making it difficult to guarantee the stability of intermediate values across multiple clock cycles.
 Anvil eliminates this class of errors by making the timing relationships between the creation and use of values explicit, and by enforcing that values are used only when they are semantically valid.
 At the same time, Anvil gives designers full control over state-storing elements (registers) and cycle-level latency.
 Anvil compiles to synthesizable SystemVerilog and has demonstrated comparable **area, power, and frequency** to handwritten SystemVerilog designs in practice, while incurring **no additional clock-cycle latency**.
