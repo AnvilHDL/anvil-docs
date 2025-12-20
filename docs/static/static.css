@@ -140,17 +140,17 @@ p {
 
 /* Sidebar */
 .wy-nav-side {
-    background-color: #fffef0 !important;
-    border-right: 1px solid #e0e0e0 !important;
-}
-
-.wy-side-nav-search {
     background-color: #c0504d !important; /* Brick red */
     border-bottom: 1px solid #a0403d !important;
 }
 
+.wy-side-nav-search {
+    background-color: #fffef0 !important;
+    border-right: 1px solid #e0e0e0 !important;
+}
+
 .wy-side-nav-search > a {
-    color: #ffffff !important;
+    color: #c0504d !important;
     font-weight: bold !important;
 }
 
@@ -162,7 +162,7 @@ p {
 
 /* Sidebar navigation */
 .wy-menu-vertical a {
-    color: #404040 !important;
+    color: #fffef0 !important;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
@@ -188,7 +188,7 @@ p {
 }
 
 .wy-menu-vertical p.caption {
-    color: #808080 !important;
+    color: #dfdfdf !important;
 }
 
 /* Links */
@@ -1193,4 +1193,16 @@ a[href*="_sources"] {
 .lp-section-conclusion {
     color: var(--muted);
     margin: 0
+}
+.title-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%
+}
+
+@media (min-width: 769px) {
+    .title-logo {
+        width: 350px;
+    }
 }

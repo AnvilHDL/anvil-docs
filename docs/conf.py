@@ -75,6 +75,8 @@ html_additional_pages = {
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = True
+html_favicon = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
+html_logo = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
 
 # Intersphinx configuration
 intersphinx_mapping = {

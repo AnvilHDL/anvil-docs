@@ -1,5 +1,14 @@
 .. AnvilHDL Documentation master file
 
+.. image:: https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil-horizontal.png?raw=true
+   :alt: AnvilHDL logo
+   :class: title-logo
+   :target: https://anvil.kisp-lab.org/
+
+.. raw:: html
+
+   <br>
+
 Welcome to AnvilHDL Documentation!
 ====================================
 
