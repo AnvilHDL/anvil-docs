@@ -1036,6 +1036,13 @@ a[href*="_sources"] {
     font-size: 50px !important;
     color: #2e1c1b !important;
     margin-bottom: 0.2em !important;
+    margin-top: 0.3em !important;
+}
+
+.lp-main-title-logo {
+    height: 80px;
+    vertical-align: middle;
+    margin-right: 12px;
 }
 
 .lp-button-bar {
@@ -1154,17 +1161,28 @@ a[href*="_sources"] {
 .lp-sub-title {
     margin-top: .35rem;
     color: var(--muted);
-    font-size: 1.05rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #c0504d;
     text-align: center;
+}
+
+.lp-emphasise {
+    color: #c0504d;
+    font-weight: 600;
 }
 
 .lp-section-box {
     max-width: 72ch;
-    margin: 2rem auto;
+    margin: 1rem auto;
     background: linear-gradient(180deg, var(--card), transparent);
-    padding: 1.25rem 1.5rem;
+    padding: .3rem 1.5rem;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.03)
+}
+
+.lp-section-box p {
+    line-height: 1.6;
 }
 
 .lp-section-heading {
@@ -1175,6 +1193,7 @@ a[href*="_sources"] {
 
 .lp-section-intro {
     margin-top: 0;
+    margin-bottom: 0;
     color: var(--muted)
 }
 
@@ -1194,6 +1213,15 @@ a[href*="_sources"] {
     color: var(--muted);
     margin: 0
 }
+
+.lp-footer-content {
+    text-align: center;
+    color: var(--muted);
+    font-size: .875rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem
+}
+
 .title-logo {
     display: block;
     margin-left: auto;

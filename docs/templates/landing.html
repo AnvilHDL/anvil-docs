@@ -31,10 +31,11 @@
     {%- block extrahead %} {% endblock %}
     </head>
     <body>
-        <!-- TODO: the text content is placeholder -->
         <div class="lp-title-box">
-            <div class="lp-main-title">AnvilHDL</div>
-            <div class="lp-sub-title">Timing-safe Hardware Description Language</div>
+            <div class="lp-main-title">
+                <img class="lp-main-title-logo" src="https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil-horizontal.png?raw=true" alt="AnvilHDL logo">
+            </div></div>
+            <div class="lp-sub-title">Hardware Design with Guardrails and Control</div>
             <nav class="lp-button-bar" aria-label="Quick links">
                 <a class="lp-button secondary" href="/docs/" target="_blank" rel="noopener">
                     <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
@@ -54,6 +55,12 @@
                     </svg>
                     Preprint
                 </a>
+                <a class="lp-button secondary" href="https://github.com/kisp-nus/anvil" target="_blank" rel="noopener">
+                    <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
+                        <path fill="currentColor" d="M6 2h10a2 2 0 0 1 2 2v16l-5-3-5 3V4a2 2 0 0 1 2-2z"/>
+                    </svg>
+                    Code
+                </a>
                 <a class="lp-button secondary" href="https://anvilhdl.zulipchat.com/" target="_blank" rel="noopener">
                     <svg class="lp-button-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" role="img">
                         <path fill="currentColor" d="M20 2H4C2.9 2 2 2.9 2 4v12c0 1.1.9 2 2 2h3v3l4-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM7 9h10v2H7V9zM7 12h7v2H7v-2z"/>
@@ -62,16 +69,14 @@
                 </a>
             </nav>
         </div>
-        <div class="lp-intro">
-            <p class="lp-intro-text">
-                AnvilHDL is a timing-safe hardware description language that combines clear,
-                concise syntax with explicit timing semantics to produce predictable, verifiable,
-                and synthesizable digital designs.
-            </p>
-        </div>
         <div class="lp-section-box">
-            <div class="lp-section-heading">Why AnvilHDL</div>
-            <p class="lp-section-intro">AnvilHDL is a timing-safe hardware description language designed for predictable, verifiable digital design. Key features include:</p>
+            <div class="lp-section-heading">Why AnvilHDL?</div>
+            <!-- TODO: the text content here is placeholder -->
+            <p class="lp-section-intro">
+                AnvilHDL is a general-purpose hardware description language that aims to
+                provide both <span class="lp-emphasise">guardrails</span> and
+                <span class="lp-emphasise">control</span>.
+            </p>
             <ul class="lp-features">
                 <li><strong>Timing-safe semantics</strong> — explicit, deterministic timing model prevents inadvertent race conditions and makes behavior predictable across synthesis and simulation.</li>
                 <li><strong>Cycle-accurate simulation</strong> — supports fast, reproducible simulations that match the specified timing semantics.</li>
@@ -84,6 +89,55 @@
             </ul>
             <p class="lp-section-conclusion">Together these features make AnvilHDL well-suited for developing reliable, high-performance hardware with predictable timing and strong verification support.</p>
         </div>
-
+        <div class="lp-section-box">
+            <div id="docs-heading" class="lp-section-heading">Documentation</div>
+            <p class="lp-section-intro">
+                The full documentation can be found <a href="docs/">here</a>.
+            </p>
+            <ul class="lp-docs">
+                <li><a href="docs/installation.html">Installation Guide</a></li>
+                <li><a href="docs/background.html">Getting Started</a></li>
+                <li><a href="docs/languageReference.html">Language Reference</a></li>
+            </ul>
+            <p class="lp-section-intro">
+                You can also read our <a href="https://arxiv.org/abs/2503.19447" target="_blank" rel="noopener">ASPLOS '26 paper</a>
+                for more background and details.
+            </p>
+        </div>
+        <div class="lp-section-box">
+            <div class="lp-section-heading">Discuss AnvilHDL</div>
+            <p class="lp-section-intro">
+                Join our
+                <a href="https://anvilhdl.zulipchat.com/" target="_blank" rel="noopener">
+                    Zulip chat
+                </a>
+                to discuss any questions or ideas related to AnvilHDL!
+            </p>
+            <p class="lp-section-intro">
+                We thank Zulip for sponsoring our project by providing free
+                hosting for our chat server.
+            </p>
+        </div>
+        <div class="lp-section-box">
+            <div class="lp-section-heading">Contributing to AnvilHDL</div>
+            <p class="lp-section-intro">
+                AnvilHDL is an open-source project hosted on
+                <a href="https://github.com/kisp-nus/anvil">GitHub</a>.
+                We welcome contributions from the community!
+            </p>
+        </div>
+        <div class="lp-section-box">
+            <div class="lp-section-heading">About</div>
+            <p class="lp-section-intro">
+                AnvilHDL is a research project developed by
+                <a href="https://kisp.comp.nus.edu.sg/">KISP Lab</a> at
+                National University of Singapore (NUS).
+            </p>
+        </div>
+        <footer class="lp-footer" role="contentinfo" aria-label="Site footer">
+            <div class="lp-footer-content">
+                <p>&copy; 2025 AnvilHDL Team, NUS</p>
+            </div>
+        </footer>
     </body>
 </html>
