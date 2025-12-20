@@ -4,20 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     quickLinksNav.className = 'quick-links-navbar';
     quickLinksNav.innerHTML = `
         <a href="https://github.com/kisp-nus/anvil" target="_blank" title="Anvil Compiler">
-            <img class="quicklink-icon" src="_static/github-mark.svg" alt="GitHub" />
+            <img class="quicklink-icon" src="/_static/github-mark.svg" alt="GitHub" />
         </a>
         <a href="https://anvil.kisp-lab.org/" target="_blank" title="AnvilHDL Playground">
-            <img class="quicklink-icon" src="_static/terminal-logo.svg" alt="Playground" " />
+            <img class="quicklink-icon" src="/_static/terminal-logo.svg" alt="Playground" " />
         </a>
 
         <a href="https://arxiv.org/abs/2503.19447" target="_blank" title="Research Paper">
-            <img class="quicklink-icon" src="_static/arxiv-logo.svg" alt="Paper" />
+            <img class="quicklink-icon" src="/_static/arxiv-logo.svg" alt="Paper" />
         </a>
         <a href="https://anvilhdl.zulipchat.com/" target="_blank" title="Community Chat">
             <img class="quicklink-icon" src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.0.0/zulip.svg" alt="Chat";" />
         </a>
     `;
-    
+
     document.body.appendChild(quickLinksNav);
 
 
@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleBtn.innerHTML = '☰';
     toggleBtn.title = 'Hide Navigation';
     toggleBtn.setAttribute('aria-label', 'Toggle Navigation');
-    
+
     document.body.appendChild(toggleBtn);
-    
+
 
     if (window.innerWidth > 768) {
         const navHidden = localStorage.getItem('navHidden') === 'true';
@@ -55,26 +55,26 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleBtn.innerHTML = '—';
         }
     }
-    
+
     function handleToggle(e) {
         e.preventDefault();
         e.stopPropagation();
-        
+
 
         if (window.innerWidth <= 768) return;
-        
+
         document.body.classList.toggle('nav-hidden');
         const isHidden = document.body.classList.contains('nav-hidden');
-        
+
         // Update button icon
         toggleBtn.innerHTML = isHidden ? '☰' : '—';
-        
+
         // Save preference
         localStorage.setItem('navHidden', isHidden);
     }
-    
+
     toggleBtn.addEventListener('click', handleToggle);
-    
+
     // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth <= 768) {

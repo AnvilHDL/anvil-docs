@@ -1,6 +1,6 @@
 # 1. Background: The HDL Primer
 
-The hardware description workflow starts with writing the hardware description in an abstraction called RTL (Register Transfer Level). For example, if you want to describe a simple adder in the most widely used HDL, SystemVerilog, you would write:  
+The hardware description workflow starts with writing the hardware description in an abstraction called RTL (Register Transfer Level). For example, if you want to describe a simple adder in the most widely used HDL, SystemVerilog, you would write:
 
 ```verilog
 module adder(
@@ -12,17 +12,17 @@ module adder(
 endmodule
 ```
 
-This is known as the **behavioral description** of the adder. There is also a **structural description**, where logic gates are used as the most atomic primitives to describe the hardware. However, that is beyond the scope of this discussion.  
+This is known as the **behavioral description** of the adder. There is also a **structural description**, where logic gates are used as the most atomic primitives to describe the hardware. However, that is beyond the scope of this discussion.
 
-At first glance, this SystemVerilog code might look like a regular software program. It appears as though we are assigning a value to an output reference in a function. But that is not the case.  
+At first glance, this SystemVerilog code might look like a regular software program. It appears as though we are assigning a value to an output reference in a function. But that is not the case.
 
 In software, you invoke a function using a call primitive, transferring control flow to it. In hardware description, however, module instantiation does **not** mean transferring control. Instead, it follows a communication paradigm -- modules interact through signals (wires).
 
 <div align="center">
 
-![](assets/HDL_module.jpg)
+![](/assets/HDL_module.jpg)
 
-</div>  
+</div>
 
 
 The signals are always connected and can be read anytime. The `assign` statement in the example above represents continuous assignment -- meaning the value of `sum` is always the sum of `a` and `b`. There is no delay; the computation happens immediately. This is what is known as combinational logic in hardware. So whenever `a` or `b` changes, `sum` updates instantaneously. Essentially, the module behaves like a circuit that continuously computes the sum of its inputs.
@@ -44,7 +44,7 @@ module counter(
     output wire [7:0] cycle_count
 )
     logic [7:0] cnt_n, cnt_q;
-    
+
     assign cycle_count = cnt_q;
     assign cnt_n = cnt_q + 8'd1
 
@@ -97,7 +97,7 @@ module multiplier(
     reg [7:0] L_n, L_q;      // Lower part of product register (contains multiplier)
     reg [7:0] M_n, M_q;      // Multiplicand storage
     reg [2:0] count_n, count_q;  // Counter (3 bits to count up to 8)
-    
+
     assign product = {H_q, L_q};
 
     always_comb begin
@@ -111,28 +111,28 @@ module multiplier(
         end
         CALC: begin
             // Check LSB of multiplier (L_q[0])
-            if (L_q[0]) 
+            if (L_q[0])
                 H_n = H_q + M_q;  // Add multiplicand if the current bit is 1
-            else 
+            else
                 H_n = H_q;
-            
+
             // Shift right {H_q, L_q}
             {H_n, L_n} = {1'b0, H_q, L_q[7:1]};
-            
+
             // Increment counter
             count_n = count_q + 3'd1;
-            
+
             // Stop after 8 cycles
-            if (count_q == 3'd7) 
+            if (count_q == 3'd7)
                 state_n = DONE;
-            else 
+            else
                 state_n = CALC;
         end
-        
+
         DONE: begin
             state_n = IDLE;
         end
-        
+
 
     end
 
@@ -143,7 +143,7 @@ module multiplier(
             L_q <= 0;
             M_q <= 0;
             count_q <= 0;
-        end 
+        end
         else begin
         //Register updates
             state_q <= state_n;

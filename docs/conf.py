@@ -78,6 +78,8 @@ napoleon_include_init_with_doc = True
 html_favicon = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
 html_logo = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
 
+root_doc = 'docs/index'
+
 # Intersphinx configuration
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),

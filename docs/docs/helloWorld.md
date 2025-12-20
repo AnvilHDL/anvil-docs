@@ -6,7 +6,7 @@ To illustrate this, consider the following example. The `FOO` module sends a rea
 
 <div align="center">
 
-![](assets/memory.png)
+![](/assets/memory.png)
 </div>
 
 In this example, the `FOO` module sends a read request by setting the `req` signal high and providing an address on the `input` signal. The value of the `input` signal changes in the following cycle. The `FOO` module then expects the memory to respond with the data at the specified address by reading the `output` signal. However, as observed in the simulation waveform, the output data is not as expected. The value corresponding to the requested address becomes available only after two cycles. Furthermore, half of the address translations are skipped.
