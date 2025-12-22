@@ -76,7 +76,6 @@ body:not(.nav-hidden) .navbar-toggle-btn {
     left: 310px;
 }
 
-
 @media (min-width: 769px) {
     body.nav-hidden .wy-nav-side {
         transform: translateX(-100%);
@@ -96,7 +95,6 @@ body:not(.nav-hidden) .navbar-toggle-btn {
     }
 }
 
-
 .wy-nav-side {
     transition: transform 0.3s ease;
 }
@@ -107,7 +105,7 @@ body:not(.nav-hidden) .navbar-toggle-btn {
 
 /* Main body and content */
 body, .wy-body-for-nav {
-    background-color: #fffef5 !important; /* Light yellow */
+    background-color: #fffef5 !important;
     color: #404040 !important;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     -webkit-font-smoothing: antialiased !important;
@@ -115,7 +113,7 @@ body, .wy-body-for-nav {
 }
 
 .wy-nav-content-wrap {
-    background-color: #fffef5 !important; /* Light yellow */
+    background-color: #fffef5 !important;
 }
 
 .wy-nav-content {
@@ -140,7 +138,7 @@ p {
 
 /* Sidebar */
 .wy-nav-side {
-    background-color: #c0504d !important; /* Brick red */
+    background-color: #c0504d !important;
     border-bottom: 1px solid #a0403d !important;
 }
 
@@ -172,7 +170,7 @@ p {
 }
 
 .wy-menu-vertical li.current a {
-    color: #c0504d !important; /* Brick red */
+    color: #c0504d !important;
     background-color: #fff9e6 !important;
     border-right: 3px solid #c0504d !important;
 }
@@ -226,10 +224,6 @@ pre, code, .rst-content code, .rst-content pre {
     font-size: 15px !important;
 }
 
-.highlight {
-    background-color: #f8f8f8 !important;
-}
-
 /* Inline code */
 code.literal {
     background-color: #f0f0f0 !important;
@@ -256,7 +250,7 @@ code.literal {
     color: #ffffff !important;
 }
 
-/* Admonitions/Notes - Light red theme with highlighting */
+/* Admonitions/Notes */
 .admonition, .note, .attention, .caution, .danger, .error, .hint,
 .important, .tip, .warning {
     background-color: #ffe8e6 !important;
@@ -272,7 +266,7 @@ code.literal {
 .danger > .admonition-title, .error > .admonition-title,
 .hint > .admonition-title, .important > .admonition-title,
 .tip > .admonition-title, .warning > .admonition-title {
-    background-color: #c0504d !important; /* Brick red */
+    background-color: #c0504d !important;
     color: #ffffff !important;
     padding: 6px 12px !important;
     margin: -12px -16px 12px -16px !important;
@@ -280,7 +274,7 @@ code.literal {
     font-weight: 600 !important;
 }
 
-/* Blockquotes - styled like highlighted note blocks */
+/* Blockquotes */
 blockquote, .rst-content blockquote {
     background-color: #ffe8e6 !important;
     border-left: 4px solid #c0504d !important;
@@ -310,7 +304,7 @@ blockquote p strong:first-child {
 }
 
 .rst-content table.docutils thead {
-    background-color: #fff9e6 !important; /* Light yellow */
+    background-color: #fff9e6 !important;
 }
 
 .rst-content table.docutils th {
@@ -344,7 +338,6 @@ footer, .rst-footer-buttons {
 }
 
 /* Interactive Anvil Playground Widget */
-
 .anvil-playground-widget {
     border: 2px solid #c0504d;
     border-radius: 8px;
@@ -398,7 +391,6 @@ footer, .rst-footer-buttons {
 
 .anvil-stop-btn {
     background: #dc3545;
-
 }
 
 .anvil-stop-btn:hover {
@@ -499,7 +491,6 @@ footer, .rst-footer-buttons {
     min-height: 250px;
 }
 
-
 .anvil-editor-section .CodeMirror,
 .anvil-editor-section .CodeMirror * {
     user-select: text !important;
@@ -516,7 +507,6 @@ footer, .rst-footer-buttons {
     background: #3390ff77 !important;
 }
 
-
 .anvil-editor-section .CodeMirror-code::selection,
 .anvil-editor-section .CodeMirror-code *::selection {
     background: #3390ff77 !important;
@@ -526,7 +516,6 @@ footer, .rst-footer-buttons {
 .anvil-editor-section .CodeMirror-code *::-moz-selection {
     background: #3390ff77 !important;
 }
-
 
 .anvil-editor-section .CodeMirror-cursor {
     border-left: 2px solid #333 !important;
@@ -568,21 +557,9 @@ footer, .rst-footer-buttons {
     font-weight: bold;
 }
 
-.cm-s-anvil-light .cm-keyword.cm-definition {
-    color: #c0504d !important;
-    font-weight: bold;
-}
-
-.cm-s-anvil-light .cm-keyword.cm-control {
-    color: #c0504d !important;
-    font-weight: bold;
-}
-
-.cm-s-anvil-light .cm-keyword.cm-module {
-    color: #c0504d !important;
-    font-weight: bold;
-}
-
+.cm-s-anvil-light .cm-keyword.cm-definition,
+.cm-s-anvil-light .cm-keyword.cm-control,
+.cm-s-anvil-light .cm-keyword.cm-module,
 .cm-s-anvil-light .cm-keyword.cm-modifier {
     color: #c0504d !important;
     font-weight: bold;
@@ -736,166 +713,11 @@ footer, .rst-footer-buttons {
     font-style: italic;
 }
 
-
 .anvil-code-editor::selection {
     background: #3390ff44;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .anvil-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .anvil-run-btn,
-    .anvil-reset-btn,
-    .anvil-copy-btn {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 6px;
-    }
-
-    .anvil-output-content {
-        max-height: 300px;
-    }
-}
-
-
-
-@media (max-width: 768px) {
-
-    /* Hide quick links navbar on mobile - too cramped */
-    .quick-links-navbar {
-        display: none !important;
-    }
-
-    .wy-nav-top {
-        background-color: #c0504d !important;
-        color: white !important;
-        display: flex !important;
-        align-items: center !important;
-        padding: 0 10px !important;
-        height: 50px !important;
-        line-height: 50px !important;
-    }
-
-
-    .wy-nav-top i {
-        color: white !important;
-        font-size: 24px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 40px !important;
-        height: 50px !important;
-        line-height: 50px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-
-    .wy-nav-top a {
-        color: white !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        height: 50px !important;
-        line-height: 50px !important;
-        padding-left: 5px !important;
-        font-size: 16px !important;
-    }
-
-
-    .navbar-toggle-btn {
-        display: none !important;
-    }
-
-
-    .wy-nav-side {
-        background-color: #fffef0 !important;
-
-    }
-
-
-    body.nav-hidden .wy-nav-side {
-        transform: none !important;
-        -webkit-transform: none !important;
-    }
-
-
-    .wy-nav-side {
-        background-color: #fffef0 !important;
-        transition: left 0.3s ease !important;
-        transform: none !important;
-    }
-
-    .wy-nav-content-wrap {
-        transition: left 0.3s ease !important;
-    }
-
-
-    .wy-nav-content {
-        padding: 1rem !important;
-        max-width: 100% !important;
-    }
-
-
-    h1, h2, h3, h4, h5, h6,
-    .rst-content h1, .rst-content h2, .rst-content h3 {
-        padding: 6px 10px !important;
-        font-size: 1.2em !important;
-    }
-
-
-    pre, code {
-        font-size: 12px !important;
-        word-break: break-word !important;
-    }
-
-    div.highlight {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-    }
-
-
-    .anvil-playground-widget {
-        margin: 10px 0;
-    }
-
-    .anvil-editor-section .CodeMirror {
-        min-height: 150px;
-        font-size: 12px !important;
-    }
-
-
-    .anvil-tab {
-        padding: 12px 15px;
-    }
-
-
-    .custom-footer {
-        margin: 10px;
-        padding: 10px;
-    }
-}
-
-
-@media (min-width: 769px) {
-    @supports (-webkit-touch-callout: none) {
-        .wy-nav-side {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-
-        body.nav-hidden .wy-nav-side {
-            -webkit-transform: translateX(-100%) translateZ(0);
-            transform: translateX(-100%) translateZ(0);
-        }
-    }
-}
-
-
-
+/* Syntax highlighting for code blocks */
 .highlight {
     background-color: #fffef5 !important;
     border: 1px solid #e0d8c0 !important;
@@ -910,9 +732,7 @@ footer, .rst-footer-buttons {
     font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace !important;
 }
 
-
-.highlight .c1,     /* Comment.Single */
-.highlight .cm {    /* Comment.Multiline */
+.highlight .c1, .highlight .cm {
     color: #808080 !important;
     font-style: italic !important;
 }
@@ -942,37 +762,34 @@ footer, .rst-footer-buttons {
 .highlight .m,
 .highlight .mf,
 .highlight .mh,
-.highlight .mi,     /* Number.Integer */
-.highlight .mb,     /* Number.Bin */
-.highlight .mo {    /* Number.Oct */
+.highlight .mi,
+.highlight .mb,
+.highlight .mo {
     color: #ae81ff !important;
 }
 
-.highlight .o,      /* Operator */
-.highlight .ow {    /* Operator.Word */
+.highlight .o, .highlight .ow {
     color: #c0504d !important;
 }
 
-.highlight .p {     /* Punctuation */
+.highlight .p {
     color: #333333 !important;
 }
 
-.highlight .nx,     /* Name.Other */
-.highlight .bp {    /* Name.Builtin.Pseudo */
+.highlight .nx, .highlight .bp {
     color: #333333 !important;
 }
 
-.highlight .se {    /* String.Escape */
+.highlight .se {
     color: #8b4513 !important;
 }
 
-.highlight .err {   /* Error */
+.highlight .err {
     color: #dc3545 !important;
     background-color: #ffe8e6 !important;
 }
 
 /* Copy Code Button */
-
 .copy-code-btn {
     position: absolute;
     top: 8px;
@@ -1007,8 +824,7 @@ a[href*="_sources"] {
     display: none !important;
 }
 
-/*   Custom Footer*/
-
+/* Custom Footer */
 .custom-footer {
     text-align: center;
     padding: 12px 15px;
@@ -1035,10 +851,144 @@ a[href*="_sources"] {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 100%
+    width: 100%;
 }
 
-@media (min-width: 769px) {
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .quick-links-navbar {
+        display: none !important;
+    }
+
+    .wy-nav-top {
+        background-color: #c0504d !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        padding: 0 10px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+    }
+
+    .wy-nav-top i {
+        color: white !important;
+        font-size: 24px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .wy-nav-top a {
+        color: white !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        height: 50px !important;
+        line-height: 50px !important;
+        padding-left: 5px !important;
+        font-size: 16px !important;
+    }
+
+    .navbar-toggle-btn {
+        display: none !important;
+    }
+
+    .wy-nav-side {
+        background-color: #fffef0 !important;
+        transition: left 0.3s ease !important;
+        transform: none !important;
+    }
+
+    body.nav-hidden .wy-nav-side {
+        transform: none !important;
+        -webkit-transform: none !important;
+    }
+
+    .wy-nav-side .wy-menu-vertical a,
+    .wy-nav-side .wy-menu-vertical a:link,
+    .wy-nav-side .wy-menu-vertical a:visited {
+        color: #404040 !important;
+    }
+
+    .wy-nav-side .wy-menu-vertical a:hover {
+        background-color: #f5f5f5 !important;
+        color: #c0504d !important;
+    }
+
+    .wy-nav-side .wy-menu-vertical p.caption {
+        color: #808080 !important;
+    }
+
+    .wy-nav-side .wy-side-nav-search input[type="text"] {
+        background-color: #ffffff !important;
+        color: #404040 !important;
+        border: 1px solid #d0d0d0 !important;
+    }
+
+    .wy-nav-content-wrap {
+        transition: left 0.3s ease !important;
+    }
+
+    .wy-nav-content {
+        padding: 1rem !important;
+        max-width: 100% !important;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .rst-content h1, .rst-content h2, .rst-content h3 {
+        padding: 6px 10px !important;
+        font-size: 1.2em !important;
+    }
+
+    pre, code {
+        font-size: 12px !important;
+        word-break: break-word !important;
+    }
+
+    div.highlight {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .anvil-playground-widget {
+        margin: 10px 0;
+    }
+
+    .anvil-editor-section .CodeMirror {
+        min-height: 150px;
+        font-size: 12px !important;
+    }
+
+    .anvil-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .anvil-run-btn,
+    .anvil-reset-btn,
+    .anvil-stop-btn,
+    .anvil-copy-btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 6px;
+    }
+
+    .anvil-output-content {
+        max-height: 300px;
+    }
+
+    .anvil-tab {
+        padding: 12px 15px;
+    }
+
+    .custom-footer {
+        margin: 10px;
+        padding: 10px;
+    }
     .title-logo {
         width: 350px;
     }

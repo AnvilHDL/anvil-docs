@@ -459,8 +459,8 @@ However, only a restricted set of combinations is considered well-formed:
 2. `@#1 - @dyn`
 3. `@#1 - @#1`
 4. `@#msg + n - @#msg + n`
-5. `@dyn - @#msg + n`
-6. `@#msg + n - @dyn`
+5. `@dyn - @#msg`
+6. `@#msg - @dyn`
 7. `@dyn - @dyn` (equivalent to writing no synchronization pattern)
 
 Some combinations are semantically ill-formed, such as:
@@ -474,7 +474,7 @@ Some combinations are semantically ill-formed, such as:
 **To summarize:**
 The synchronization patterns `@dyn - @#1` and `@#1 - @dyn` imply that one endpoint is ready to exchange messages every cycle, while the other endpoint chooses when to communicate dynamically. In these cases, the compiler generates handshake signals for the dynamic side, while ensuring that the static side adheres to its one-cycle schedule.
 
-The synchronization patterns `@#msg + n - @dyn` and `@dyn - @#msg + n` specify that one endpoint promises to be ready to communicate exactly `n` cycles after the corresponding message `<msg>` is exchanged, while the other endpoint cannot guarantee a fixed latency. In these cases, the compiler generates handshake signals for the dynamic side, while ensuring that the static side adheres to its fixed schedule.
+The synchronization patterns `@#msg - @dyn` and `@dyn - @#msg` specify that one endpoint promises to be ready to communicate after the corresponding message `<msg>` is exchanged, while the other endpoint cannot guarantee a fixed latency. In these cases, the compiler generates handshake signals for the dynamic side, while ensuring that the static side adheres to its fixed schedule.
 
 The synchronization pattern `@#msg + n - @#msg + n` indicates that both endpoints promise to communicate exactly `n` cycles after the corresponding message `<msg>`. Since both sides guarantee a fixed schedule, no handshake is required; the compiler only needs to ensure that both sides respect this fixed timing relationship.
 
