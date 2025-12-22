@@ -341,7 +341,7 @@ The synchronization contract for `res` specifies:
 
 
 
-For a detailed explanation of lifetime patterns and synchronization modes, see the [tutorial](https://github.com/jasonyu1996/anvil/tree/master/docs/tutorial/L2-Communication)
+For a detailed explanation of lifetime patterns and synchronization modes, see the [tutorial](communication.md).
 
 ---
 
