@@ -12,12 +12,12 @@
 Welcome to AnvilHDL Documentation!
 ====================================
 
-`Anvil <https://github.com/jasonyu1996/anvil>`_ is a general-purpose hardware description language (HDL) that statically guarantees **timing safety** -- the absence of timing hazards, at compile time using a novel type system.
+`Anvil <https://github.com/jasonyu1996/anvil>`_ is a general-purpose hardware description language (HDL) that guarantees **timing safety**, the absence of timing hazards. Its novel type system enforces this guarantee at compile time.
 
-In traditional HDLs, signals may unintentionally change when their underlying registers are updated, making it difficult to guarantee the stability of intermediate values across multiple clock cycles.
-Anvil eliminates this class of errors by making the timing relationships between the creation and use of values explicit, and by enforcing that values are used only when they are semantically valid.
+In traditional HDLs, signals may unintentionally change when their underlying registers are updated. These changes make it difficult to guarantee that intermediate values remain stable across multiple clock cycles.
+Anvil eliminates this class of errors by making the timing relationships between the creation and use of values explicit. It enforces that values are used only when they are semantically valid.
 At the same time, Anvil gives designers full control over state-storing elements (registers) and cycle-level latency.
-Anvil compiles to synthesizable SystemVerilog and has demonstrated comparable **area, power, and frequency** to handwritten SystemVerilog designs in practice, while incurring **no additional clock-cycle latency**.
+Anvil compiles to synthesizable SystemVerilog. In practice, it has demonstrated comparable **area, power, and frequency** to handwritten SystemVerilog designs, with **no additional clock-cycle latency**.
 
 
 You can try Anvil without installation at `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_,
@@ -25,7 +25,7 @@ or install it locally by following the :doc:`installation` guide.
 
 Citation
 --------
-Anvil has been accepted to apear at `ASPLOS 2026 <https://asplos-conference.org/asplos2026/>`_. If you use Anvil in your research, please use the following citation:
+Anvil has been accepted to appear at `ASPLOS 2026 <https://asplos-conference.org/asplos2026/>`_. If you use Anvil in your research, please use the following citation:
 
 .. code-block:: bibtex
 

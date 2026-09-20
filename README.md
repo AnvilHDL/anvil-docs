@@ -1,7 +1,7 @@
 # AnvilHDL Documentation
 
 
-To build the documentation, run the following command:
+To build the documentation, run:
 
 ```bash
 bash build-docs.sh
@@ -11,13 +11,12 @@ bash build-docs.sh
 The documentation will be generated in the `docs/_build/html` directory.
 
 
-For internal testing, you can start a local server by running (will build the docs first):
+To test the documentation locally, run the following command. It builds the documentation and then starts a local server:
 
 ```bash
 bash run-server.sh
 ```
 
-> *Note:* Every Change to the documentation requires rebuilding using `build-docs.sh` or `run-server.sh`.
-
+> *Note:* After each change to the documentation, rebuild it using `build-docs.sh` or `run-server.sh`.
 
 

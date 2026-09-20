@@ -1,8 +1,8 @@
 # 2. Motivation
 
-In the previous section, we established the fundamental programming paradigm of HDLs, in which hardware components are modeled as state machines. We also saw that de-facto HDLs such as SystemVerilog provide the low-level constructs needed to describe these state machines, giving designers fine-grained control over hardware behavior. At the end of the section, we identified several questions that arise when interfacing with components written in these HDLs. These questions intuitively highlight the challenge of ensuring that modules exchange values with a shared understanding of timing and validity constraints.
+The previous section described the fundamental programming paradigm of HDLs: hardware components are modeled as state machines. De-facto HDLs such as SystemVerilog provide low-level constructs for these machines, giving designers fine-grained control over hardware behavior. The section ended with questions about interfacing with these components. Those questions highlight the need for modules to share an understanding of timing and validity constraints when exchanging values.
 
-To illustrate this, consider the following example. The `FOO` module sends a read request (`req`) to a memory module and expects a response by reading the `output` signal. For clarity, the HDL code has been desugared into a software-style description. On the right, the waveform diagram shows the observed behavior of the system during simulation.
+To illustrate this challenge, consider a module named `FOO` that sends a read request, `req`, to a memory module. It expects to read the response from the `output` signal. The HDL code below has been desugared into a software-style description for clarity. The waveform on the right shows the system's observed behavior during simulation.
 
 <div align="center">
 
@@ -13,7 +13,7 @@ In this example, the `FOO` module sends a read request by setting the `req` sign
 
 A closer inspection of the memory module’s implementation reveals the cause of this behavior. The memory module expects the `input` signal to remain stable for two cycles before it can produce the correct output in the next cycle. If the input changes earlier, the memory pauses its operation. As a result, when `FOO` changes the address and deasserts `req` after only one cycle, the memory stops processing the request and resumes only when `req` is asserted again in the next cycle. Consequently, the address `0x00` is translated after three cycles instead of one. Similarly, before the address `0x01` can be processed, the `input` has already changed to `0x02`, causing the translation for `0x01` to be skipped entirely.
 
-This kind of unintended behavior arises because intermediate values change during an ongoing computation. We refer to such problems as **timing hazards**. The root cause of the issue here is the lack of a shared timing contract between the `FOO` module and the memory module. The interface provides no information about how long input signals must remain stable or how long output signals remain valid.
+This unintended behavior arises because intermediate values change during an ongoing computation. Such problems are called **timing hazards**. Here, the problem stems from the lack of a shared timing contract between `FOO` and the memory module. Their interface does not specify how long inputs must remain stable or how long outputs remain valid.
 
 In simple terms, timing violations occur when:
 
@@ -27,7 +27,7 @@ These issues motivate the need for:
 1. Better abstractions for modeling hardware components and their interfaces.
 2. A mechanism to specify and enforce timing contracts between components.
 
-Anvil addresses these challenges by introducing higher-level message-passing abstractions, while still giving designers control over resources such as clock-cycle latency and registers. It allows designers to specify timing contracts directly in component interfaces. To enforce these contracts, Anvil’s type system reasons about the *lifetimes* of all values at compile time. It ensures that values are not used outside their valid lifetimes and that registers are not overwritten while they are still in use.
+Anvil addresses these challenges with higher-level message-passing abstractions. These abstractions let designers specify timing contracts directly in component interfaces while retaining control over clock-cycle latency and registers. Anvil's type system enforces the contracts by reasoning about the *lifetimes* of all values at compile time. It ensures that values are used only within their valid lifetimes and that registers are not overwritten while still in use.
 
 
 
@@ -54,9 +54,11 @@ The process body begins with the declaration of a register `counter` of type `lo
 
 Following this declaration, the behavior of the process is defined inside a `loop` construct. This models the fact that hardware processes run indefinitely and are naturally expressed as looping state machines. The loop body describes the behavior of the process in each iteration. In this example, each iteration performs two actions.
 
-The first expression is a `let` binding that creates an intermediate value `cnt`. This value holds the result of incrementing the `counter` register by 1. The `*` operator is used to dereference the value stored in the register. Following this, we have a debug print statement `dprint` that outputs the value of the counter.
+The first expression creates an intermediate value, `cnt`, using a `let` binding. In this binding, the `*` operator dereferences the value stored in `counter`. The value `cnt` holds the result of incrementing that value by 1. The following debug print statement, `dprint`, outputs the counter value.
 
-The `>>` operator is the *wait* operator. It indicates that the evaluation of the following term proceeds only after the previous term has completed. This operator helps model sequential behavior in hardware processes. The `;` join operator is used to execute multiple expressions in parallel. For instance, ( t_1 ; t_2 ) indicates that both ( t_1 ) and ( t_2 ) execute concurrently, and the combined expression completes when both have finished. This is similar to a fork-join construct in software programming languages.
+The `>>` operator models sequential behavior: evaluation of the following term starts only after the previous term completes. It is called the *wait* operator.
+
+The `;` operator models parallel execution and is called *join*. For two expressions `t_1` and `t_2`, `t_1; t_2` executes both concurrently and completes when both have finished. This is similar to a fork-join construct in software programming languages.
 
 In this program, the `let` and `dprint` expressions execute concurrently. The loop waits for both to complete before proceeding to the next expression. In this example, both expressions are *immediate*, meaning they complete without consuming any clock cycles. The final expression is the `set` expression, which updates the value of the `counter` register by incrementing it by 1. This update takes one clock cycle to complete. Therefore, the loop iterates once every cycle.
 
@@ -82,4 +84,3 @@ To illustrate this, consider the following modified version of the program:
 Executing this code results in a compile-time error. The reason is that the value `cnt` is used on line 6, but the register `counter` is updated earlier on line 4. This violates timing safety, because `cnt` depends on `counter`. Anvil’s type system detects this error statically and rejects the program.
 
 As a result, all values created using `let` bindings in Anvil are guaranteed to remain constant from the moment they are created until the end of their scope. This provides strong timing safety guarantees at compile time.
-

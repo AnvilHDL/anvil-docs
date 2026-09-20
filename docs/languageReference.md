@@ -1,7 +1,7 @@
-# Tour of Anvil : Syntax and Features
+# Tour of Anvil: Syntax and Features
 
 
-We now present a detailed tour of all language constructs in Anvil. We illustrate each construct with small code examples and explain their semantics.
+This tour explains Anvil's language constructs and their semantics, using small code examples.
 
 
 ## 1. Lexical Conventions
@@ -10,7 +10,7 @@ Anvil follows standard lexical rules like SystemVerilog.
 
 ### Whitespace
 
-Whitespace separates identifiers, literals, and keywords but is otherwise ignored, **except inside string literals**, where it is treated as part of the value.
+Whitespace separates identifiers, literals, and keywords. It is otherwise ignored, **except inside string literals**, where it forms part of the value.
 
 ### Comments
 
@@ -116,15 +116,13 @@ Anvil supports several kinds of values, including:
 
 ### Array
 
-An array is a fixed-length sequence of values of the same type. A logic array is written as:
+An array is a fixed-length sequence of values of the same type. A logic array of `n` bits is written as:
 
 ```text
 n'b...
 n'd...
 n'h...
 ```
-
-where `n` is the number of bits.
 
 Example:
 
@@ -200,6 +198,7 @@ Meaning:
 - `logic` is the single-bit type.
 - `$identifier` refers to a named type.
 - `(T[n])` is an array of `n` elements of type `T`.
+
 Examples:
 
 ```anvil
@@ -266,17 +265,17 @@ enum state {
 
 ## 5. Channels
 
-A channel is the fundamental abstraction for communication and synchronization between a pair of processes. Channels are abstractions of bundled interface wires in traditional HDLs. Some key abstractions related to channels are:
+A channel provides communication and synchronization between a pair of processes. It abstracts the bundled interface wires used in traditional HDLs. A channel has the following features:
 
 1. **Endpoints:** Each channel has **two endpoints**, corresponding to the two ends of the communication. Conceptually, a channel resembles a pipe that transports values between its two endpoints.
 
 2. **Messages** : A channel defines a set of messages that can be sent and received in specified directions. Each message carries a value of a given data type.
 
-3. **Timing Contract:** Each message is associated with a timing contract, which specifies how long the exchanged value remains valid after the communication completes. This duration is referred to as the message’s *lifetime*.
+3. **Timing Contract:** Each message has a timing contract specifying how long its value remains valid after communication completes. This duration is the message's *lifetime*.
 
-4. **Synchronization:** All messages in Anvil are synchronous: a message transfer completes only when both endpoints are ready. Consequently, sending and receiving occur at the same logical time. The time of synchronization is defined as the time at which the send/receive operation completes.
+4. **Synchronization:** A message transfer completes only when both endpoints are ready. Sending and receiving therefore occur at the same logical time, making all messages in Anvil synchronous. The completion of the send/receive operation defines the time of synchronization.
 
-By default, all messages use two-way handshake synchronization. However, Anvil allows users to specify different synchronization modes for each endpoint of a message. This enables the compiler to avoid generating unnecessary handshakes when synchronization is not required or can be determined statically.
+Messages use two-way handshake synchronization by default. Each endpoint of a message can also specify a different synchronization mode. These modes let the compiler omit unnecessary handshakes when synchronization is not required or can be determined statically.
 
 
 
@@ -290,7 +289,7 @@ A channel class serves as a template for creating channels. It specifies:
 - their timing contracts, and
 - their synchronization modes.
 
-Channel classes play a role analogous to interface definitions in languages such as SystemVerilog. However, while SystemVerilog interfaces specify only the data types and directions of communication, Anvil channel classes additionally define the _timing-contract_. Channel classes may also be parameterized by type and integer parameters.
+Channel classes play a role similar to interface definitions in SystemVerilog. SystemVerilog interfaces specify the data types and directions of communication; Anvil channel classes also define the *timing contract*. A channel class may have type and integer parameters.
 
 
 ```bnf
@@ -310,7 +309,7 @@ sync-mode          ::= "dyn"
                       | "#" identifier [ "+" digit+ ]
 ```
 
-Here `@ sync-mode - @ sync-mode` specifies the synchronization modes for the left and right endpoints for that particular message respectively.
+In `@ sync-mode - @ sync-mode`, the first mode describes the message's left endpoint and the second describes its right endpoint.
 
 
 For example, consider the following channel class definition for a simple request-response channel:
@@ -322,17 +321,10 @@ chan simple_ch<T : type, W : int> {
 }
 ```
 
-This channel class declares:
+The class has a data type parameter, `T`, and an integer parameter, `W`. It declares two messages:
 
-- Parameters:
-
-  - `T` : a data type parameter,
-  - `W` :  an integer parameter.
-
-- Messages:
-
-  - `req`: received on the **left** endpoint with value type `T` and lifetime `req`.
-  - `res`: received on the **right** endpoint with value type `logic[W]` and lifetime `#1`.
+- `req` is received on the **left** endpoint with value type `T` and lifetime `req`.
+- `res` is received on the **right** endpoint with value type `logic[W]` and lifetime `#1`.
 
 The synchronization contract for `res` specifies:
 
@@ -366,7 +358,7 @@ This creates a channel of type `simple_ch<logic[8], 1>` and binds its endpoints 
 ---
 ### Array of Channels
 
-Channels may be declared in array form for convenience. This creates multiple instances of a channel type at once, and produces correspondingly indexed endpoint identifiers.
+An array declaration creates multiple instances of a channel type at once. Their endpoints have correspondingly indexed identifiers.
 
 ```bnf
 channel-array-creation ::= "chan" identifier "--" identifier ":"
@@ -374,13 +366,12 @@ channel-array-creation ::= "chan" identifier "--" identifier ":"
                             "[" digit+ "]" ";"
 ```
 
-The declaration below:
+For example, this declaration creates four independent channels of type `simple_ch<logic[8], 1>`:
 
 ```anvil
 chan ep_le -- ep_ri : simple_ch<logic[8], 1>[4];
 ```
 
-creates an array of 4 independent channel instances of type `simple_ch<logic[8], 1>`.
 Their endpoints are bound as follows:
 
 - The left endpoints of the 4 channels become `ep_le[0]`, `ep_le[1]`, `ep_le[2]`, and `ep_le[3]`.
@@ -434,14 +425,12 @@ This defines a process named `Foo` with:
 - `W`, an integer parameter, and
 - one endpoint argument `ep`, which is the **left** endpoint of the channel class `simple_ch<T, W>`.
 
-The process body may contain:
+The process body specifies its behavior through:
 
 - channel creations,
 - process spawns,
 - register declarations, and
-- thread definitions,
-
-which together specify the behavior of the process.
+- thread definitions.
 
 Arrays of endpoints can also be passed to processes in the same way.
 
@@ -453,10 +442,7 @@ proc FooArray<T : type, W : int>( ep : right simple_ch<T, W>[4] ) {
 }
 ```
 
-This declares a process `FooArray` that takes an array `ep` consisting of 4 endpoints of type `right simple_ch<T, W>`.
-Inside the process body, the individual endpoints can be accessed as `ep[0]`, `ep[1]`, `ep[2]`, and `ep[3]`.
-
-Each index corresponds to one endpoint of the array passed to the process.
+The process `FooArray` takes an array `ep` of four endpoints of type `right simple_ch<T, W>`. Inside its body, `ep[0]`, `ep[1]`, `ep[2]`, and `ep[3]` access the corresponding endpoints.
 
 
 ### Process Spawning
@@ -479,13 +465,7 @@ proc Bar() {
 }
 ```
 
-This code:
-
-1. Defines a process named `Bar`.
-2. Creates a channel of type `simple_ch<logic[8], 4>`, binding its endpoints to `ep_le` and `ep_ri`.
-3. Spawns an instance of the process `Foo`, passing:
-   - the left endpoint `ep_le` as the argument, and
-   - the type parameters `logic[8]` and `4` to the spawned process.
+The process `Bar` creates a channel of type `simple_ch<logic[8], 4>` with endpoints `ep_le` and `ep_ri`. It then spawns `Foo`, passing the left endpoint `ep_le` as its argument and `logic[8]` and `4` as its parameters.
 
 
 ### Threads
@@ -496,13 +476,13 @@ Two kinds of threads are supported:
 
 #### Loop Threads
 
-Loop threads are used to defined infinite replicating behaviour of the components.
+A loop thread describes a component's indefinitely repeating behavior.
 
 ```bnf
 loop-thread ::= "loop" "{" expression "}"
 ```
 
-For example they can be used to define components with looping finite state machines, such as memory controllers (skeleton shown below):
+Loop threads can describe components with looping finite state machines. The following skeleton illustrates their use in a memory controller:
 
 ```anvil
 proc memory_controller(ep : left memory_ch){
@@ -517,7 +497,7 @@ proc memory_controller(ep : left memory_ch){
 
 #### Recursive Threads
 
-Recursive threads define general recursive behavior in a process. They generalize loop threads (`loop` can be thought of as tail recursive threads) and are particularly useful for describing pipelined behaviours.
+Recursive threads describe general recursive behavior within a process. They generalize loop threads, which can be viewed as tail-recursive threads. Recursive threads are particularly useful for describing pipelined behavior.
 
 
 ```bnf
@@ -575,12 +555,12 @@ For example, `set r := e` writes the evaluated result of `e` to the register `r`
 
 ## 8. Expressions
 
-Anvil provides a variety of expressions to describe hardware behaviour. Below is a comprehensive overview of the expression forms supported in Anvil.
+Anvil describes hardware behavior through the expression forms below.
 
 
 ### Debug Statements
 
-For simulation only, Anvil provides a debug print (akin to `$display` in SystemVerilog) to print messages to the console, and `dfinish` to terminate the simulation.
+During simulation, `dprint` prints messages to the console, much like `$display` in SystemVerilog. The expression `dfinish` terminates the simulation. Both expressions are for simulation only.
 
 ```bnf
 debug-print ::= "dprint" string-literal "(" expression ")" 
@@ -596,21 +576,18 @@ The `cycle` expression introduces a delay in the evaluation of expressions.
 cycle-expression ::= cycle { $digit }+
 ```
 
-The `cycle` expression evaluates to the unit value `()` delayed by a specified number
-of cycles. Its sole purpose is to introduce this delay. For example, `cycle 3` evaluates to `()` after three cycles.
+The `cycle` expression evaluates to the unit value `()` after the specified number of cycles. For example, `cycle 3` evaluates to `()` after three cycles. Introducing this delay is the expression's sole purpose.
 
 
 ### Wait
 
-The `wait` expression is the main means of controlling time. It is used to define sequencing between expressions.
+The `wait` expression controls time by sequencing expressions.
 
 ```
 wait-expression ::= $expression >> $expression
 ```
 
-The expression `e1 >> e2` waits for the evaluation of `e1` to complete (if it has not already
-completed) before starting the evaluation of `e2`. The entire expression evaluates to the
-result of `e2` when both `e1` and `e2` have completed.
+In `e1 >> e2`, evaluation of `e2` starts only after `e1` has completed. The combined expression returns the result of `e2` when both expressions have completed.
 
 For example, consider the following program:
 
@@ -636,9 +613,9 @@ For example, consider the following program:
     }
 ```
 
-For the above program, in each iteration of the first thread,
-the message `"[Cycle X] Starting computation..."` is printed, where `X` is the current value of the cycle counter stored in the register `counter`. The program then waits for 2 cycles, prints
-`"[Cycle X] Computation done after 2 cycles."`. After 1 cycle the program reaches the end of the loop iteration and starts the next iteration. The second thread increments the `counter` register every cycle. The third thread waits for 10 cycles and then terminates the simulation.
+The first thread begins each iteration by printing `"[Cycle X] Starting computation..."`, where `X` is the current value of `counter`. It then waits two cycles and prints `"[Cycle X] Computation done after 2 cycles."`. After one more cycle, the iteration ends and the next begins.
+
+The second thread increments `counter` every cycle. The third waits ten cycles and then terminates the simulation.
 
 
 ### Join
@@ -647,9 +624,7 @@ the message `"[Cycle X] Starting computation..."` is printed, where `X` is the c
 join-expression ::= $expression ; $expression
 ```
 
-The expression `e1; e2` starts the evaluations of `e1` and `e2` immediately and
-at the same time. It evaluates to the evaluation result of `e2` when both evaluations
-complete.
+The expression `e1; e2` starts evaluating `e1` and `e2` immediately, at the same time. It returns the result of `e2` when both evaluations complete.
 
 For example, consider the modified version of the previous program:
 
@@ -675,8 +650,9 @@ For example, consider the modified version of the previous program:
     }
 ```
 
-In this program, in each iteration of the first thread,
-the message `"[Cycle X] Starting computation..."` is printed, where `X` is the current value of the cycle counter stored in the register `counter`. The program then starts the evaluations of `cycle 3` and `cycle 2` at the same time. The join expression completes when both cycles complete, which is after 3 cycles. Then the message `"[Cycle X] Computation done after Later of (2,3) cycles."` is printed. After 1 cycle the program reaches the end of the loop iteration and starts the next iteration.
+The first thread begins each iteration by printing `"[Cycle X] Starting computation..."`, where `X` is the current value of `counter`. It then starts `cycle 3` and `cycle 2` at the same time. The join completes when both delays have finished, after three cycles.
+
+The thread then prints `"[Cycle X] Computation done after Later of (2,3) cycles."`. After one more cycle, the iteration ends and the next begins.
 
 
 > *Note* The `>>` and `;` operators are right-associative and have the same precedence. For example, `e1; e2 >> e3; e4 >> e5` is equivalent to `(e1; (e2 >> (e3; (e4 >> e5))))`.
@@ -688,14 +664,9 @@ let-expression ::= let $identifier = $expression ; $expression
 let-wait-expression ::= let $identifier = $expression >> $expression
 ```
 
-The let expression `let x = e1; e2` binds `e1` to an identifier `x`, which can be
-referenced in `e2`. The entire expression evaluates to the evaluation result of `e2` when
-both `e1` and `e2` have completed.
+The expression `let x = e1; e2` binds `e1` to the identifier `x`, which can be referenced in `e2`. It starts evaluating `e1` and `e2` at the same time. Once both complete, it returns the result of `e2`.
 
-The difference between `let x = e1; e2` and `let x = e1 >> e2`
-is that the former starts evaluating `e1` and `e2` at the same time, whereas the latter
-waits for `e1` to complete before starting to evaluate `e2`, similar to the relationship
-between the join and wait expressions.
+The form `let x = e1 >> e2` waits for `e1` to complete before starting `e2`. The two forms therefore follow the same distinction as join and wait.
 
 For example:
 
@@ -725,13 +696,9 @@ In this program, in each iteration of the loop, the expression `*counter + 8'd1`
 if-else-expression ::= if $expression { $expression } [ else ( { $expression } | $if-else-expression ) ]
 ```
 
-The expression `if e1 { e2 } else { e3 }` evaluates to the evaluation result of
-`e2` or `e3` depending on the evaluation result of `e1`. The evaluation of `e1` must already
-be complete and the result must still be valid.
+The expression `if e1 { e2 } else { e3 }` selects a branch using the result of `e1`. This result must already be available and must still be valid. If it is all zero, evaluation starts in `e3`; otherwise, it starts in `e2`. The expression returns the selected branch's result.
 
-If `e1` evaluates to an all-zero value, the expression starts evaluating `e3`. Otherwise,
-it starts evaluating `e2`. The `else` clause is optional, with `if e1 { e2 }` being equivalent to
-`if e1 { e2 } else { () }`. Multiple conditionals can be chained, for example:
+The `else` clause is optional: `if e1 { e2 }` is equivalent to `if e1 { e2 } else { () }`. Multiple conditionals can also be chained, for example:
 `if e1 { e2 } else if e3 { e4 } else { ... }`.
 
 For example:
@@ -762,7 +729,7 @@ For example:
     }
 ```
 
-This program prints whether the current cycle (value of `counter`) is even or odd in each iteration of the loop. Note that the even cycles introduce a delay of 3 cycles, while the odd cycles introduce a delay of 1 cycle. Therefore in Anvil branches can take different times to complete and the language semantics and the type system are designed to handle this naturally.
+On each iteration, the program prints whether the current value of `counter` is even or odd. The even branch introduces a delay of three cycles, and the odd branch introduces a delay of one cycle. Branches can therefore take different times to complete. Anvil's semantics and type system support this behavior.
 
 
 ### Match
@@ -819,8 +786,7 @@ binary-arith-operator ::= + | - | & | | | ^ | < | > | <= | >= | == | != | in
 unary-arith-operator ::= - | ~ 
 ```
 
-These expressions evaluate according to their operators. The evaluation completes
-when the one (unary) or both (binary) sub-expressions complete their evaluations.
+These expressions evaluate according to their operators. A unary expression completes when its operand completes; a binary expression completes when both operands complete.
 
 > **Note:** The `in` operator checks whether the value of the left expression is contained in the set specified by the right expression. The right-hand side must be a set of expressions enclosed in curly braces `{}`.
 > For example, `e1 in { e2, e3, e4 }` evaluates to true if the value of `e1` matches any of the values of `e2`, `e3`, or `e4`. This is syntax sugar for
@@ -864,10 +830,7 @@ For example, consider the following program:
 concat-expression ::= #{ $expression {, $expression} }
 ```
 
-The expression `#{e1, e2, ..., en}` concatenates the evaluation results of `e1`, `e2`, ...,
-`en` into an array where and completes evaluation when all evaluations of `e1`, `e2`, ..., `en` have completed.
-Note `en` will be placed at the low bits in the result while `e1` will be placed at the high bits.
-For example `#{2'b01, 5'b01101, 1'b1}` produces value `8'b01011011`.
+The expression `#{e1, e2, ..., en}` concatenates the results of `e1` through `en` into an array. It completes when all of these expressions have completed. In the result, `e1` occupies the high bits and `en` occupies the low bits. For example, `#{2'b01, 5'b01101, 1'b1}` produces `8'b01011011`.
 
 ### Send
 
@@ -875,10 +838,7 @@ For example `#{2'b01, 5'b01101, 1'b1}` produces value `8'b01011011`.
 send-expression ::= send $identifier.$identifier ($expression)
 ```
 
-When the evaluation of the expression `send ep.m (e)` starts, the process starts waiting
-to send the evaluated result of `e` with message `ep.m`, where `ep` is an endpoint identifier
-and `m` is a message identifier. The evaluation completes with result `()`
-once the send occurs.
+The expression `send ep.m (e)` waits to send the result of `e` as message `m` on endpoint `ep`. Once the send occurs, the expression completes with result `()`.
 
 ### Receive 
 
@@ -940,14 +900,14 @@ For example, consider the following program:
 ```
 ### Try Send/Receive
 
-For the purpose of avoiding blocking on communication when synchronization is not guaranteed, Anvil provides convenience features such as `try send` and `try recv` expressions.
+When synchronization is not guaranteed, `try send` and `try recv` let a process attempt communication without blocking.
 
 ```bnf
 try-send-expression ::= "try" "send" $identifier.$identifier($expression) { $expression } else $expression
 try-recv-expression ::= "try" $identifier = "recv" $identifier.$identifier { $expression } else $expression
 ```
 
-For `try` expressions, if the communication can proceed immediately, then the continuation branch is executed with the result of the communication. Otherwise, the `else` branch is executed.
+If communication can proceed immediately, a `try` expression executes its continuation branch with the communication result. Otherwise, it executes the `else` branch.
 
 
 ```{eval-rst}
@@ -1008,14 +968,13 @@ In the above program, the `Bar` process uses a `try recv` expression to attempt 
 
 ### Functions
 
-Functions provide a means of code reuse. Although we call them functions, in the current version, they are more akin to macros at the expression AST level.
+Functions allow code reuse. In the current version, they behave like macros at the level of the expression's abstract syntax tree (AST).
 
 ```
 function-definition ::= func $identifier ( [$identifier {, $identifier}] ) { $expression }
 ```
 
-Calling a function simply substitutes the call in place with the function body,
-with the extra bindings specified in the parameters:
+Calling a function replaces the call with the function body and introduces bindings for its parameters:
 
 ```
 call-expression ::= call $identifier ( [$expression {, $expression}] )
@@ -1053,11 +1012,13 @@ For example:
 
 In this program, we define a function named `max` that takes two parameters, `a` and `b`, and returns the maximum of the two. Inside the `Top` process, we call this function with the current value of the `counter` register and the constant `8'd5`. The result is bound to the identifier `sum`, which is then printed in the debug statement.  
 
-> **Note:** In current version, functions have all the bindings in the context of the call site in scope, including registers inside processes.
+> **Note:** In the current version, a function can access all bindings in scope at its call site, including registers inside processes.
  
 ### Cast
 
-Often, data-width mismatches are silently ignored by simulators and compilers in traditional HDLs, which can lead to unintended behavior. Anvil enforces strict data-type checking to prevent such issues, and even supports an option to restrict casts between abstract data types (this restriction is disabled by default). When a conversion is necessary, Anvil provides an explicit cast expression:
+Simulators and compilers for traditional HDLs often silently ignore data-width mismatches. These mismatches can lead to unintended behavior. Anvil prevents such issues through strict data-type checking. It also provides an option to restrict casts between abstract data types; this restriction is disabled by default.
+
+When a conversion is necessary, it can be written explicitly with a cast expression:
 
 ```
 cast-expression ::= "<" ( $expression ) "::" $data-type-expression ">"
@@ -1090,14 +1051,14 @@ The debug print statement shows the original value and its casted forms.
 ### Generate 
 
 
-Sometimes for repetitive code patterns, it is useful to generate code programmatically. Anvil provides two generate constructs: `generate` and `generate_seq`.
+Repetitive code can be generated programmatically with two constructs: `generate` and `generate_seq`.
 
 ```
 generate-expression ::= "generate" ( $identifier : $start, $end, $step ) { $expression }
 generate-seq-expression ::= "generate_seq" ( $identifier : $start, $end, $step ) { $expression }
 ```
 
-The `generate` expression unrolls the body expression for each value of the loop variable from `start` to `end` (inclusive) with the specified `step` in parallel i.e akin to generating a join expression of all the unrolled bodies. On the other hand, the `generate_seq` expression unrolls the body expression for each value of the loop variable from `start` to `end` (inclusive) with the specified `step` in sequence i.e akin to generating a wait expression of all the unrolled bodies.
+Both constructs unroll the body for each value of the loop variable, from `start` to `end` inclusive, using the specified `step`. The `generate` construct combines these bodies in parallel, like a join expression. The `generate_seq` construct combines them in sequence, like a wait expression.
 
 
 For example:

@@ -1,6 +1,6 @@
 # 1. Background: The HDL Primer
 
-The hardware description workflow starts with writing the hardware description in an abstraction called RTL (Register Transfer Level). For example, if you want to describe a simple adder in the most widely used HDL, SystemVerilog, you would write:  
+The hardware description workflow starts at an abstraction called register transfer level (RTL). For example, a simple adder can be described in SystemVerilog, the most widely used HDL, as follows:
 
 ```verilog
 module adder(
@@ -12,11 +12,9 @@ module adder(
 endmodule
 ```
 
-This is known as the **behavioral description** of the adder. There is also a **structural description**, where logic gates are used as the most atomic primitives to describe the hardware. However, that is beyond the scope of this discussion.  
+This is a **behavioral description** of the adder. Hardware can also have a **structural description**, which uses logic gates as its most atomic primitives. Structural descriptions are beyond the scope of this discussion.
 
-At first glance, this SystemVerilog code might look like a regular software program. It appears as though we are assigning a value to an output reference in a function. But that is not the case.  
-
-In software, you invoke a function using a call primitive, transferring control flow to it. In hardware description, however, module instantiation does **not** mean transferring control. Instead, it follows a communication paradigm -- modules interact through signals (wires).
+At first glance, this SystemVerilog code might look like a software function that assigns a value to an output reference. In software, a function call transfers control flow to the function. In hardware description, module instantiation does **not** transfer control. Modules instead interact through signals (wires).
 
 <div align="center">
 
@@ -33,7 +31,7 @@ The signals are always connected and can be read anytime. The `assign` statement
 
 Combinational logic models computations that are pure functions of the inputs. However, hardware behavior is often described using **finite state machines**. For this purpose, de-facto HDLs provide the abstraction of *registers* to model state-storing elements such as flip-flops and latches.
 
-The state of a system is updated by a **state function**. This function is written over the current input values and the existing state values. The output of the state function is the **next state**, which is assigned to a register on the next clock cycle.
+The system's state is updated by a **state function**, which takes the current input and state values. Its output is the **next state**. This next state is assigned to a register on the next clock cycle.
 
 For instance, consider the following SystemVerilog implementation of a counter:
 
@@ -58,7 +56,9 @@ endmodule
 
 This code describes a component named `counter`. The component takes a clock signal `clk` and a reset signal `rst` as inputs. It produces an output signal `cycle_count`, which represents the current counter value.
 
-The body of the module first declares two local variables, `cnt_n` and `cnt_q`. Both are declared using logic. In practice, a SystemVerilog compiler or simulator infers whether a signal behaves as a wire or a register based on how it is used. By convention, `s_n` denotes the next state, while `s_q` stores the current state of the state variable `s` of the component. In this example, the state variable `cnt` simply stores the counter value.
+The module body first declares two local variables, `cnt_n` and `cnt_q`, using `logic`. A SystemVerilog compiler or simulator infers whether a signal behaves as a wire or a register from how it is used.
+
+The names follow a convention: for a state variable `s`, `s_n` denotes its next state and `s_q` stores its current state. Here, `cnt` is the state variable that stores the counter value.
 
 After the declarations, two continuous assignments are defined:
 `assign cycle_count = cnt_q;` and `assign cnt_n = cnt_q + 8'd1`.
@@ -67,11 +67,11 @@ The first assignment connects the output port `cycle_count` to the internal stat
 
 The next state `cnt_n` is assigned to the state register `cnt_q` inside the `always_ff` block. The sensitivity list `@(posedge clk or negedge rst)` specifies that the assignment occurs either on the positive edge of the clock `clk` or on the negative edge of the reset signal `rst`. Intuitively, this means that the register is updated either during reset or on each clock cycle. Recall that the output signal `cycle_count` is mapped to the register `cnt_q`. Therefore, from the interacting module's perspective, the component produces a new counter value on every cycle.
 
-In summary, HDLs define a programming paradigm that is different from traditional software abstractions. In this paradigm, the designer describes a state machine. The states are stored in registers. The wires carry intermediate values that are derived from registers or are constant. The interfaces are also modeled using wires. These wires carry values at all times and are generally functions of the internal state.
+HDLs therefore define a programming paradigm in which the designer describes a state machine. Its state is stored in registers, and wires carry intermediate values derived from registers or constants. Interfaces are also modeled using wires. These interface wires carry values at all times, and their values are generally functions of the internal state.
 
 
 
-## Example : A Multiplier
+## Example: A Multiplier
 
 Hardware designs often have a higher level state machine that defines the overall behavior of the component. Consider the following example of an 8-bit shift-and-add multiplier implemented in SystemVerilog:
 
@@ -159,9 +159,13 @@ endmodule
 
 The output signal `product` is sourced from the registers `H` and `L`. That is, `product` updates immediately whenever `H` or `L` changes, which happens every cycle. The register `H` stores the upper half of the product, while `L` stores the lower half. The register `M` stores the multiplicand, and the register `count` keeps track of the steps of the algorithm. Since this is an 8-bit multiplier, the algorithm takes 8 cycles to complete. The register `state` stores the current state of the high-level state machine.
 
-The `case` block inside the `always_comb` block (which defines combinational logic) describes the high-level control state machine. It has three states: `IDLE`, which initializes values; `CALC`, which performs the shift-and-add algorithm over the state; and `DONE`, which indicates that the multiplication is complete and the product is ready to be read.
+The `always_comb` block defines combinational logic. Its `case` block describes the high-level control state machine, which has three states:
 
-Although understanding the implementation of this multiplier is already somewhat tricky, the lack of human descriptions, comments, or clear naming conventions creates additional challenges for any interfacing module. Several important questions arise for a module that wants to use this multiplier. For instance:
+- `IDLE` initializes values.
+- `CALC` performs the shift-and-add algorithm over the state.
+- `DONE` indicates that multiplication is complete and the product is ready to be read.
+
+Understanding the multiplier's implementation is already somewhat tricky. The lack of human descriptions, comments, or clear naming conventions creates further challenges for an interfacing module. We will refer to this interfacing module as the *Top* module, as it is often called. A module that wants to use the multiplier faces several questions:
 
 - **How does the Top module know when the product is ready?**
 - **How does the multiplier module know when to start computing? Does it expect new inputs every 8 cycles?**
@@ -169,5 +173,3 @@ Although understanding the implementation of this multiplier is already somewhat
 - **Do compilers or synthesis tools help prevent incorrect usage of the module?**
 
 These questions highlight the need for better abstractions in HDLs for describing hardware components. That is where *Anvil* comes in.
-
-> **Note** : The interfacing module is often called the *Top* module and will be referred to as such in the rest of this documentation.

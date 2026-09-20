@@ -4,9 +4,8 @@ This document describes how to set up and use the [Anvil](https://github.com/jas
 
 ## 1. Setup Instructions
 
-1. Install the prerequisite (`opam`)
-   Install the OCaml package manager opam by following the official instructions:
-   [https://opam.ocaml.org/doc/Install.html](https://opam.ocaml.org/doc/Install.html)
+1. Install `opam`, the OCaml package manager, by following the
+   [official installation instructions](https://opam.ocaml.org/doc/Install.html).
 
 2. Clone the repository
 
@@ -26,7 +25,7 @@ This document describes how to set up and use the [Anvil](https://github.com/jas
    opam install . --deps-only
    ```
 
-At this point, all required dependencies are available. You can now proceed in one of two ways, depending on whether you want a local development build or a global installation.
+With the required dependencies installed, choose either a local development build or a global installation.
 
 
 **Option 1: Local Build (for Development)**
@@ -46,7 +45,7 @@ This option builds and runs the compiler without installing it globally.
    dune exec anvil -- <args>
    ```
 
-This method is recommended for development and testing, as it avoids reinstalling the package after every change.
+This method avoids reinstalling the package after every change, making it the recommended option for development and testing.
 
 **Option 2: Global Installation (as an opam Package)**
 
@@ -80,15 +79,15 @@ After installation, the compiler can be invoked as follows:
 The input files must use the `.anvil` extension.
 
 
-Following are the available command-line options:
+The compiler accepts the following command-line options:
 
 
 - `-disable-lt-checks`: Disable lifetime-related checks.
 - `-O <opt-level>`: Specify optimization level. (Currently : 0, 1, 2; Default : 2)
 - `-verbose`: Enable verbose output.
-- `-o <output-file>`: Specify output file name, generates `<output-file>.anvil.sv`  emits to stdout if not provided.
+- `-o <output-file>`: Write the output to `<output-file>.anvil.sv`. If this option is omitted, emit the output to standard output.
 - `-just-check`: Only type-check the source file without generating code.
-- `-json-output` : Output compilation results in JSON format.
+- `-json-output`: Output compilation results in JSON format.
 - `-strict-dtc`: Enable strict data type checks (prevents abstract data types conversion).
 - `-help`: Display help information.
 
@@ -101,14 +100,10 @@ Following are the available command-line options:
 dune exec anvil -- -verbose -O 2 -o example_output example.anvil 
 ```
 
-This command compiles `example.anvil` with:
-- verbose debug output enabled, and
-- optimisation level set to 2 (highest codegen optimization).
-- generates output file `example_output.anvil.sv`.
+This command compiles `example.anvil` with verbose debug output enabled and optimisation level set to 2 (the highest codegen optimization). It generates the output file `example_output.anvil.sv`.
 
 ```bash
 dune exec anvil -- -just-check example.anvil
 ```
 This command type-checks `example.anvil` without generating code.
-
 

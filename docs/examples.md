@@ -1,3 +1,3 @@
 # 4. Learning With Examples
 
-To be added soon....
+Examples will be added soon.
