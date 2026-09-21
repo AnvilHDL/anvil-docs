@@ -5,6 +5,7 @@ The documentation sources are organized into:
 - [`docs/tutorial/`](docs/tutorial/index.md): installation and tutorial chapters.
 - [`docs/langref/`](docs/langref/index.md): language reference topics, with grouped expression pages in `expressions/`.
 - [`docs/index.rst`](docs/index.rst): the documentation home page and navigation.
+- [`docs/artefacts.md`](docs/artefacts.md): project repositories, research artefacts, and contributors.
 
 
 Create a local Python environment and install the documentation dependencies once:

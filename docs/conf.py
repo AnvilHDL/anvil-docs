@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'AnvilHDL Documentation'
-copyright = '2025, AnvilHDL Team, NUS'
+copyright = '2026, AnvilHDL Team, NUS'
 author = 'AnvilHDL Team'
 release = '0.1.0'
 
@@ -71,8 +71,8 @@ html_js_files = [
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = True
-html_favicon = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
-html_logo = 'https://github.com/kisp-nus/anvil/blob/master/docs/logo/anvil.png?raw=true'
+html_favicon = 'assets/anvil.png'
+html_logo = 'assets/anvil.png'
 
 # Intersphinx configuration
 intersphinx_mapping = {

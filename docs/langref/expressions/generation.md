@@ -16,7 +16,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     type byte = (logic[8]);
     proc Bar(){

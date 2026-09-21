@@ -18,7 +18,7 @@ class AnvilPlaygroundDirective(SphinxDirective):
     
     Usage:
         .. anvil-playground::
-            :playground-url: https://anvil.capstone.kisp-lab.org
+            :playground-url: https://anvil.kisp-lab.org
             
             proc hello_world_counter() {
                 reg counter : logic[8];
@@ -40,7 +40,7 @@ class AnvilPlaygroundDirective(SphinxDirective):
     def run(self):
         code = '\n'.join(self.content)
         
-        playground_url = self.options.get('playground-url', 'https://anvil.capstone.kisp-lab.org')
+        playground_url = self.options.get('playground-url', 'https://anvil.kisp-lab.org')
         height = self.options.get('height', '500px')
         
         node = AnvilPlaygroundNode()

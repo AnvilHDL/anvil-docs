@@ -61,7 +61,7 @@ As a concrete example, consider the following process definition that uses the c
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -172,7 +172,7 @@ To preserve `input` until the response arrives, move the `set` expression after 
    <div style="padding: 10px 0;">
 
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -257,7 +257,7 @@ To use `data` within its lifetime, it must be consumed before any operation adva
    <div style="padding: 10px 0;">
 
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@res),
@@ -348,7 +348,7 @@ The following example illustrates Cases 2 and 3:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
       chan foobar_ch {
           left req : (logic[8]@#1) @dyn - @#1,

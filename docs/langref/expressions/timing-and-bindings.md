@@ -24,7 +24,7 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
     
     proc Top() {
         reg counter : logic[8];
@@ -60,7 +60,7 @@ For example, consider the modified version of the previous program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
     
     proc Top() {
         reg counter : logic[8];
@@ -102,7 +102,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         reg counter : logic[8];

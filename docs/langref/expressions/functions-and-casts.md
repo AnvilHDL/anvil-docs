@@ -18,7 +18,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     func max(a, b) {
         if a > b {
@@ -62,7 +62,7 @@ For example:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     proc Top() {
         loop{

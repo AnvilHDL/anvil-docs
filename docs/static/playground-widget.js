@@ -4,7 +4,7 @@ class AnvilPlayground {
     constructor(containerId, code, playgroundUrl) {
         this.container = document.getElementById(containerId);
         this.code = code;
-        this.playgroundUrl = playgroundUrl || 'https://anvil.capstone.kisp-lab.org';
+        this.playgroundUrl = playgroundUrl || 'https://anvil.kisp-lab.org';
         this.ws = null;
         this.isRunning = false;
         this.init();
@@ -274,7 +274,7 @@ function initPlaygrounds() {
         try {
             // Data attributes are automatically HTML-unescaped by the browser
             const code = element.dataset.code || '';
-            const playgroundUrl = element.dataset.playgroundUrl || 'https://anvil.capstone.kisp-lab.org';
+            const playgroundUrl = element.dataset.playgroundUrl || 'https://anvil.kisp-lab.org';
             new AnvilPlayground(element.id, code, playgroundUrl);
         } catch (e) {
             console.error('Failed to initialize playground:', e);

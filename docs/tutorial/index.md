@@ -7,5 +7,4 @@ installation
 background
 hello-world
 communication
-examples
 ```

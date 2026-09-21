@@ -25,7 +25,7 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch<T : type> {
         left  req : (T@ req),
@@ -81,7 +81,7 @@ If communication can proceed immediately, a `try` expression executes its contin
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch<T : type> {
         left  req : (T@ req),
@@ -153,7 +153,7 @@ These expressions are provided for convenience. Semantically, they can be implem
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
 
     chan foobar_ch {
         left  req : (logic@#1),

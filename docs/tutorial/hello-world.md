@@ -37,7 +37,7 @@ Now it is time to write our first Anvil program!
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
     
     proc Top() {
         reg counter : logic[8];
@@ -68,7 +68,7 @@ To illustrate this, consider the following modified version of the program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
     
     proc Top() {
         reg counter : logic[8];

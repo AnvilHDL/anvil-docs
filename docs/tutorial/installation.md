@@ -1,6 +1,6 @@
 # Installation Guide
 
-This document describes how to set up and use the [Anvil](https://github.com/jasonyu1996/anvil) compiler.
+This document describes how to set up and use the [Anvil](https://github.com/AnvilHDL/anvil) compiler.
 
 ## 1. Setup Instructions
 
@@ -10,7 +10,7 @@ This document describes how to set up and use the [Anvil](https://github.com/jas
 2. Clone the repository
 
    ```bash
-   git clone https://github.com/jasonyu1996/anvil.git
+   git clone https://github.com/AnvilHDL/anvil.git
    ```
 
 3. Navigate to the project directory

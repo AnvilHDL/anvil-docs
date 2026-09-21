@@ -20,7 +20,7 @@ For example, consider the following program:
 
 ```{eval-rst}
 .. anvil-playground::
-    :playground-url: https://anvil.capstone.kisp-lab.org
+    :playground-url: https://anvil.kisp-lab.org
     
     enum state {
         IDLE,

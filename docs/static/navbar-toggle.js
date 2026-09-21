@@ -5,15 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const quickLinksNav = document.createElement('nav');
     quickLinksNav.className = 'quick-links-navbar';
     quickLinksNav.innerHTML = `
-        <a href="https://github.com/kisp-nus/anvil" target="_blank" title="Anvil Compiler">
+        <a href="https://github.com/AnvilHDL/anvil" target="_blank" title="Anvil Compiler">
             <img class="quicklink-icon" src="${new URL('github-mark.svg', anvilStaticUrl).href}" alt="GitHub" />
         </a>
         <a href="https://anvil.kisp-lab.org/" target="_blank" title="AnvilHDL Playground">
             <img class="quicklink-icon" src="${new URL('terminal-logo.svg', anvilStaticUrl).href}" alt="Playground" " />
         </a>
 
-        <a href="https://arxiv.org/abs/2503.19447" target="_blank" title="Research Paper">
-            <img class="quicklink-icon" src="${new URL('arxiv-logo.svg', anvilStaticUrl).href}" alt="Paper" />
+        <a href="https://dl.acm.org/doi/10.1145/3779212.3790125" target="_blank" title="Research Paper">
+            <img class="quicklink-icon" src="${new URL('anvil.png', anvilStaticUrl).href}" alt="Anvil paper" />
         </a>
         <a href="https://anvilhdl.zulipchat.com/" target="_blank" title="Community Chat">
             <img class="quicklink-icon" src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.0.0/zulip.svg" alt="Chat";" />
@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarLinks.innerHTML = `
             <p class="caption" role="heading"><span class="caption-text">Quick Links</span></p>
             <ul>
-                <li class="toctree-l1"><a class="reference external" href="https://arxiv.org/abs/2503.19447" target="_blank">1. Research Paper</a></li>
+                <li class="toctree-l1"><a class="reference external" href="https://dl.acm.org/doi/10.1145/3779212.3790125" target="_blank">1. Research Paper</a></li>
                 <li class="toctree-l1"><a class="reference external" href="https://anvil.kisp-lab.org/" target="_blank">2. AnvilHDL Playground</a></li>
-                <li class="toctree-l1"><a class="reference external" href="https://github.com/kisp-nus/anvil" target="_blank">3. Anvil Compiler</a></li>
+                <li class="toctree-l1"><a class="reference external" href="https://github.com/AnvilHDL/anvil" target="_blank">3. Anvil Compiler</a></li>
                 <li class="toctree-l1"><a class="reference external" href="https://anvilhdl.zulipchat.com/" target="_blank">4. Community Chat</a></li>
             </ul>
         `;
