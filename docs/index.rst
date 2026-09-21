@@ -21,7 +21,7 @@ Anvil compiles to synthesizable SystemVerilog. In practice, it has demonstrated 
 
 
 You can try Anvil without installation at `AnvilHDL Playground <https://anvil.capstone.kisp-lab.org/>`_,
-or install it locally by following the :doc:`installation` guide.
+or install it locally by following the :doc:`tutorial/installation` guide.
 
 Citation
 --------
@@ -47,24 +47,20 @@ Documentation Overview
 This documentation is organized as follows:
 
 * **Language Reference** - An up-to-date description of Anvil's syntax and language features.
-* **Getting Started** - A guided tutorial to help you get started with Anvil, including interactive examples and practice problems.
+* **Tutorial** - Installation and a guided introduction to Anvil, including interactive examples and practice problems.
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Language Reference
 
-   installation
-   languageReference
+   langref/index
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started
+   :caption: Tutorial
 
-   background
-   helloWorld
-   communication
-   examples
+   tutorial/index
 
 Quick Links
 -----------

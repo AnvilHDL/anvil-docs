@@ -18,7 +18,7 @@ At first glance, this SystemVerilog code might look like a software function tha
 
 <div align="center">
 
-![](assets/HDL_module.jpg)
+![](../assets/HDL_module.jpg)
 
 </div>  
 
